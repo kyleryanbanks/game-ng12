@@ -33,6 +33,7 @@
     "familiar-e2e": {
       "tags": [],
       "implicitDependencies": ["familiar"]
-    }
+    },
+    "roost": {}
   }
 }

@@ -9,7 +9,9 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": ["{options.outputPath}"],
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/familiar",
             "index": "apps/familiar/src/index.html",
@@ -20,7 +22,9 @@
               "apps/familiar/src/favicon.ico",
               "apps/familiar/src/assets"
             ],
-            "styles": ["apps/familiar/src/styles.css"],
+            "styles": [
+              "apps/familiar/src/styles.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -66,7 +70,10 @@
               "browserTarget": "familiar:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/familiar/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -85,7 +92,9 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/familiar"],
+          "outputs": [
+            "coverage/apps/familiar"
+          ],
           "options": {
             "jestConfig": "apps/familiar/jest.config.js",
             "passWithNoTests": true
@@ -113,9 +122,91 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/familiar-e2e/**/*.{js,ts}"]
+            "lintFilePatterns": [
+              "apps/familiar-e2e/**/*.{js,ts}"
+            ]
+          }
+        }
+      }
+    },
+    "roost": {
+      "root": "apps/roost",
+      "sourceRoot": "apps/roost/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "nx-electron:build",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "outputPath": "dist/apps/roost",
+            "main": "apps/roost/src/main.ts",
+            "tsConfig": "apps/roost/tsconfig.app.json",
+            "assets": [
+              "apps/roost/src/assets"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/roost/src/environments/environment.ts",
+                  "with": "apps/roost/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "nx-electron:execute",
+          "options": {
+            "buildTarget": "roost:build"
+          }
+        },
+        "package": {
+          "builder": "nx-electron:package",
+          "options": {
+            "name": "roost",
+            "frontendProject": "familiar",
+            "outputPath": "dist/packages",
+            "prepackageOnly": true
+          }
+        },
+        "make": {
+          "builder": "nx-electron:make",
+          "options": {
+            "name": "roost",
+            "frontendProject": "familiar",
+            "outputPath": "dist/executables"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "outputs": [
+            "{options.outputFile}"
+          ],
+          "options": {
+            "lintFilePatterns": [
+              "apps/roost/**/*.ts"
+            ]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": [
+            "coverage/apps/roost"
+          ],
+          "options": {
+            "jestConfig": "apps/roost/jest.config.js",
+            "passWithNoTests": true
           }
         }
       }
