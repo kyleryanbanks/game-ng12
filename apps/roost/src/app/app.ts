@@ -66,14 +66,21 @@ export default class App {
       width: width,
       height: height,
       show: false,
+      alwaysOnTop: true,
+      titleBarStyle: 'default',
+      transparent: true,
+      frame: false,
+      backgroundColor: '#2c664ca4',
       webPreferences: {
-        contextIsolation: true,
+        nodeIntegration: true,
+        contextIsolation: false,
         backgroundThrottling: false,
         preload: join(__dirname, 'preload.js'),
       },
     });
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
+    App.mainWindow.webContents.openDevTools();
 
     // if main window is ready to show, close the splash window and show the main window
     App.mainWindow.once('ready-to-show', () => {

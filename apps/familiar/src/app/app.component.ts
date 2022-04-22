@@ -1,10 +1,30 @@
 import { Component } from '@angular/core';
+import { FamiliarService } from './familiar.service';
 
 @Component({
-  selector: 'game-ng12-root',
+  selector: 'fam-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'familiar';
+  connected = false;
+  pluggedIn = false;
+  turtling = false;
+
+  constructor(public familiar: FamiliarService) {}
+
+  onConnect() {
+    this.familiar.connect();
+    this.connected = true;
+  }
+
+  onPlugIn() {
+    this.familiar.plugInDS4Controller();
+    this.pluggedIn = true;
+  }
+
+  onToggle() {
+    this.turtling = !this.turtling;
+    this.familiar.turtle();
+  }
 }
