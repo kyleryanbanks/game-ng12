@@ -1,1 +1,1 @@
-export * from './lib/game-loop.module';
+export * from './lib/game-loop.service';
