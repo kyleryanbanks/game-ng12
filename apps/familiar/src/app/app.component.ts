@@ -18,6 +18,11 @@ export class AppComponent {
     this.connected = true;
   }
 
+  onDisconnect() {
+    this.familiar.disconnect();
+    this.connected = false;
+  }
+
   onPlugIn() {
     this.familiar.plugInDS4Controller();
     this.pluggedIn = true;
@@ -25,6 +30,6 @@ export class AppComponent {
 
   onToggle() {
     this.turtling = !this.turtling;
-    this.familiar.turtle();
+    this.turtling ? this.familiar.turtle() : this.familiar.chill();
   }
 }

@@ -5,10 +5,25 @@
   <button (click)="onConnect()">Connect</button>
   <button (click)="onPlugIn()">Plug In!</button>
   <button (click)="familiar.start()">P2 Start</button>
-  <button (click)="familiar.disconnect()">Disconnect</button>
+  <button (click)="onDisconnect()">Disconnect</button>
   <button (click)="onToggle()">{{ turtling ? 'Chillll' : "TURTLE!"}}</button>
 </div>
 
 <div>Connected: {{ connected }}</div>
 <div>Jacked IN!: {{ pluggedIn }}</div>
 <div>TuRtlIng: {{ turtling }}</div>
+
+<div *ngIf="connected">
+  <h2>
+    Input: {{ familiar.controller._report.reportObj.wButtons }}
+  </h2>
+  <p>
+    in Binary: {{ familiar.controller._report.reportObj.wButtons.toString(2).padStart(16, '0') }} 
+  </p>
+  <h2>
+    Input: {{ familiar.controller._report.reportObj |json}}
+  </h2>
+  <p>
+    in Binary: {{ familiar.controller._report.reportObj.bSpecial.toString(2).padStart(4, '0') }} 
+  </p>
+</div>
