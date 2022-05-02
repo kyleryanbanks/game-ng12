@@ -9,9 +9,7 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/familiar",
             "index": "apps/familiar/src/index.html",
@@ -22,9 +20,7 @@
               "apps/familiar/src/favicon.ico",
               "apps/familiar/src/assets"
             ],
-            "styles": [
-              "apps/familiar/src/styles.css"
-            ],
+            "styles": ["apps/familiar/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -92,9 +88,7 @@
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/familiar"
-          ],
+          "outputs": ["coverage/apps/familiar"],
           "options": {
             "jestConfig": "apps/familiar/jest.config.js",
             "passWithNoTests": true
@@ -122,12 +116,33 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/familiar-e2e/**/*.{js,ts}"]
+          }
+        }
+      }
+    },
+    "game-loop": {
+      "projectType": "library",
+      "root": "libs/game-loop",
+      "sourceRoot": "libs/game-loop/src",
+      "prefix": "game-ng12",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/game-loop"],
+          "options": {
+            "jestConfig": "libs/game-loop/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "apps/familiar-e2e/**/*.{js,ts}"
+              "libs/game-loop/src/**/*.ts",
+              "libs/game-loop/src/**/*.html"
             ]
           }
         }
@@ -140,16 +155,12 @@
       "architect": {
         "build": {
           "builder": "nx-electron:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/roost",
             "main": "apps/roost/src/main.ts",
             "tsConfig": "apps/roost/tsconfig.app.json",
-            "assets": [
-              "apps/roost/src/assets"
-            ]
+            "assets": ["apps/roost/src/assets"]
           },
           "configurations": {
             "production": {
@@ -190,20 +201,14 @@
         },
         "lint": {
           "builder": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/roost/**/*.ts"
-            ]
+            "lintFilePatterns": ["apps/roost/**/*.ts"]
           }
         },
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/roost"
-          ],
+          "outputs": ["coverage/apps/roost"],
           "options": {
             "jestConfig": "apps/roost/jest.config.js",
             "passWithNoTests": true
