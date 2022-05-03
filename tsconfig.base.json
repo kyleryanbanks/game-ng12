@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@game-ng12/controller": ["libs/controller/src/index.ts"],
       "@game-ng12/game-loop": ["libs/game-loop/src/index.ts"]
     }
   },
