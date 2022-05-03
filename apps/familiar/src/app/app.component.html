@@ -3,27 +3,35 @@
 <div style="text-align: center">
   <h1>Welcome to Familiar!</h1>
   <button (click)="onConnect()">Connect</button>
-  <button (click)="onPlugIn()">Plug In!</button>
-  <button (click)="familiar.start()">P2 Start</button>
   <button (click)="onDisconnect()">Disconnect</button>
-  <button (click)="onToggle()">{{ turtling ? 'Chillll' : "TURTLE!"}}</button>
+  <button (click)="controller.start()">P2 Start</button>
+  <button (click)="onToggle()">{{ turtling ? 'Neutral' : "Down Back"}}</button>
 </div>
 
-<div>Connected: {{ connected }}</div>
-<div>Jacked IN!: {{ pluggedIn }}</div>
-<div>TuRtlIng: {{ turtling }}</div>
+<div>Plugged In: {{ connected }}</div>
+<div>Current State: {{ turtling ? 'Down Back' : "Neutral" }}</div>
 
 <div *ngIf="connected">
   <h2>
-    Input: {{ familiar.controller._report.reportObj.wButtons }}
+    Input: {{ controller.inputs }}
   </h2>
   <p>
-    in Binary: {{ familiar.controller._report.reportObj.wButtons.toString(2).padStart(16, '0') }} 
+    in Binary: {{ controller.inputs.toString(2).padStart(16, '0') }} 
   </p>
   <h2>
-    Input: {{ familiar.controller._report.reportObj |json}}
+    directions: {{ controller.directions }}
   </h2>
   <p>
-    in Binary: {{ familiar.controller._report.reportObj.bSpecial.toString(2).padStart(4, '0') }} 
+    in Binary: {{ controller.directions.toString(2).padStart(4, '0') }} 
   </p>
+  <h2>
+    buttons: {{ controller.buttons }}
+  </h2>
+  <p>
+    in Binary: {{ controller.buttons.toString(2).padStart(12, '0') }} 
+  </p>
+</div>
+
+<div>
+  <h2>Frame: {{ gameLoop | json }}</h2>
 </div>

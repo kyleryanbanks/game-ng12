@@ -68,8 +68,8 @@ export default class App {
       show: false,
       alwaysOnTop: true,
       titleBarStyle: 'default',
-      transparent: true,
-      frame: false,
+      //transparent: true,
+      //frame: false,
       backgroundColor: '#2c664ca4',
       webPreferences: {
         nodeIntegration: true,

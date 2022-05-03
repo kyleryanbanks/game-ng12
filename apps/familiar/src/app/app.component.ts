@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FamiliarService } from './familiar.service';
+import { ControllerService } from '@game-ng12/controller';
+import { GameLoopService } from '@game-ng12/game-loop';
 
 @Component({
   selector: 'fam-root',
@@ -8,28 +9,25 @@ import { FamiliarService } from './familiar.service';
 })
 export class AppComponent {
   connected = false;
-  pluggedIn = false;
   turtling = false;
 
-  constructor(public familiar: FamiliarService) {}
-
-  onConnect() {
-    this.familiar.connect();
-    this.connected = true;
-  }
+  constructor(
+    public controller: ControllerService,
+    public gameLoop: GameLoopService
+  ) {}
 
   onDisconnect() {
-    this.familiar.disconnect();
+    this.controller.disconnect();
     this.connected = false;
   }
 
-  onPlugIn() {
-    this.familiar.plugInDS4Controller();
-    this.pluggedIn = true;
+  onConnect() {
+    this.controller.connect();
+    this.connected = true;
   }
 
   onToggle() {
     this.turtling = !this.turtling;
-    this.turtling ? this.familiar.turtle() : this.familiar.chill();
+    this.turtling ? this.controller.turtle() : this.controller.chill();
   }
 }
