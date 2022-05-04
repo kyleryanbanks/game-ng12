@@ -67,8 +67,8 @@ export interface DS4InputReport {
   updateButton: (name: string, value: boolean) => void;
   updateAxis: (name: string, value: boolean) => void;
 
-  getButtonValue: (name: string) => boolean;
-  getAxisValue: (name: string) => number;
+  getButtonValue: (name: DS4_BUTTONS) => boolean;
+  getAxisValue: (name: DS4_BUTTONS) => number;
 
   reset: () => void;
 }

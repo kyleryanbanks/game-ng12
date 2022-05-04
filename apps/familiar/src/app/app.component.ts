@@ -19,6 +19,10 @@ export class AppComponent {
     public gameLoop: GameLoopService
   ) {}
 
+  onFrame(wButtons: number) {
+    this.controller.setButtons(wButtons);
+  }
+
   onDisconnect() {
     this.controller.disconnect();
     this.connected = false;

@@ -43,6 +43,11 @@ export class ControllerService {
     return DS4_DPAD_DIRECTIONS[this.direction];
   }
 
+  setButtons(wButtons: number) {
+    this.controller._report.reportObj.wButtons = wButtons;
+    this.controller.update();
+  }
+
   setNeutral() {
     this.controller._report.reportObj.wButtons = 8;
     this.controller._report.reportObj.bSpecial = 0;
