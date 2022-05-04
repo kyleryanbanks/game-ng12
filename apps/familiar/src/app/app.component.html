@@ -6,79 +6,156 @@
   <button (click)="onDisconnect()">Disconnect</button>
   <button (click)="controller.setNeutral()">Neutral</button>
   <button (click)="controller.setButton(_BTN.OPTIONS, true)">P2 Start</button>
-  <button (click)="controller.setDirection(_DIR.DPAD_SOUTHEAST)">Down Back</button>
+  <button (click)="controller.setDirection(_DIR.DPAD_SOUTHEAST)">
+    Down Back
+  </button>
 </div>
 
 <div>Plugged In: {{ connected }}</div>
 
 <form>
-  <fieldset>
+  <fieldset id="direction">
     <legend>Direction</legend>
-    <div>
-      <input type="radio" id="DPAD_NORTHWEST"
-       name="direction" [value]="_DIR.DPAD_NORTHWEST">
-      <label for="DPAD_NORTHWEST">NW</label>
 
-      <input type="radio" id="DPAD_NORTH"
-       name="direction" [value]="_DIR.DPAD_NORTH">
-      <label for="DPAD_NORTH">N</label>
+    <label>
+      <input
+        type="radio"
+        id="DPAD_NORTHWEST"
+        name="direction"
+        [value]="_DIR.DPAD_NORTHWEST"
+      />NW</label
+    >
 
-      <input type="radio" id="DPAD_NORTHEAST"
-       name="direction" [value]="_DIR.DPAD_NORTHEAST">
-      <label for="DPAD_NORTHEAST">NE</label>
-    </div>
-    <div>
-      <input type="radio" id="DPAD_WEST"
-       name="direction" [value]="_DIR.DPAD_WEST">
-      <label for="DPAD_WEST">W</label>
+    <label>
+      <input
+        type="radio"
+        id="DPAD_NORTH"
+        name="direction"
+        [value]="_DIR.DPAD_NORTH"
+      />N</label
+    >
 
-      <input type="radio" id="DPAD_NONE"
-       name="direction" [value]="_DIR.DPAD_NONE">
-      <label for="DPAD_NONE">Nu</label>
-
-      <input type="radio" id="DPAD_EAST"
-       name="direction" [value]="_DIR.DPAD_EAST">
-      <label for="DPAD_EAST">E</label>
-    </div>
-    <div>
-      <input type="radio" id="DPAD_SOUTHWEST"
-       name="direction" [value]="_DIR.DPAD_SOUTHWEST">
-      <label for="DPAD_SOUTHWEST">SW</label>
-
-      <input type="radio" id="DPAD_SOUTH"
-       name="direction" [value]="_DIR.DPAD_SOUTH">
-      <label for="DPAD_SOUTH">S</label>
-
-      <input type="radio" id="DPAD_SOUTHEAST"
-       name="direction" [value]="_DIR.DPAD_SOUTHEAST">
-      <label for="DPAD_SOUTHEAST">SE</label>
-    </div>
+    <label>
+      <input
+        type="radio"
+        id="DPAD_NORTHEAST"
+        name="direction"
+        [value]="_DIR.DPAD_NORTHEAST"
+      />NE</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_WEST"
+        name="direction"
+        [value]="_DIR.DPAD_WEST"
+      />W</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_NONE"
+        name="direction"
+        [value]="_DIR.DPAD_NONE"
+      />Nu</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_EAST"
+        name="direction"
+        [value]="_DIR.DPAD_EAST"
+      />E</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_SOUTHWEST"
+        name="direction"
+        [value]="_DIR.DPAD_SOUTHWEST"
+      />SW</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_SOUTH"
+        name="direction"
+        [value]="_DIR.DPAD_SOUTH"
+      />S</label
+    >
+    <label>
+      <input
+        type="radio"
+        id="DPAD_SOUTHEAST"
+        name="direction"
+        [value]="_DIR.DPAD_SOUTHEAST"
+      />SE</label
+    >
   </fieldset>
-  <div>
-    <button type="submit">Submit</button>
-  </div>
+  <fieldset id="buttons">
+    <legend>Buttons</legend>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.THUMB_RIGHT" />R.Thumb
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.THUMB_LEFT" />L.Thumb
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.OPTIONS" />Options
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.SHARE" />Share
+    </label>
+    <label>
+      <input
+        type="checkbox"
+        name="buttons"
+        [value]="_BTN.TRIGGER_RIGHT"
+      />R.Trigger
+    </label>
+    <label>
+      <input
+        type="checkbox"
+        name="buttons"
+        [value]="_BTN.TRIGGER_LEFT"
+      />L.Trigger
+    </label>
+    <label>
+      <input
+        type="checkbox"
+        name="buttons"
+        [value]="_BTN.SHOULDER_RIGHT"
+      />R.Shoulder
+    </label>
+    <label>
+      <input
+        type="checkbox"
+        name="buttons"
+        [value]="_BTN.SHOULDER_LEFT"
+      />L.Shoulder
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.TRIANGLE" />Triangle
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.SQUARE" />Square
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.CIRCLE" />Circle
+    </label>
+    <label>
+      <input type="checkbox" name="buttons" [value]="_BTN.CROSS" />Cross
+    </label>
+  </fieldset>
+  <button type="submit">Submit</button>
 </form>
 
 <div *ngIf="connected">
-  <h2>
-    Input: {{ controller.inputs }}
-  </h2>
-  <p>
-    in Binary: {{ controller.inputs.toString(2).padStart(16, '0') }} 
-  </p>
-  <h2>
-    directions: {{ controller.direction }}
-  </h2>
-  <p>
-    in Binary: {{ controller.direction.toString(2).padStart(4, '0') }} 
-  </p>
-  <p>
-    by name: {{ controller.directionName }} 
-  </p>
-  <h2>
-    buttons: {{ controller.buttons }}
-  </h2>
-  <p>
-    in Binary: {{ controller.buttons.toString(2).padStart(12, '0') }} 
-  </p>
+  <h2>Input: {{ controller.inputs }}</h2>
+  <p>in Binary: {{ controller.inputs.toString(2).padStart(16, '0') }}</p>
+  <h2>directions: {{ controller.direction }}</h2>
+  <p>in Binary: {{ controller.direction.toString(2).padStart(4, '0') }}</p>
+  <p>by name: {{ controller.directionName }}</p>
+  <h2>buttons: {{ controller.buttons }}</h2>
+  <p>in Binary: {{ controller.buttons.toString(2).padStart(12, '0') }}</p>
 </div>
