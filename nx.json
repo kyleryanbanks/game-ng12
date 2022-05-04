@@ -41,6 +41,9 @@
       "tags": ["scope:game-loop", "type:service"]
     },
     "roost": {},
+    "sequencer-data": {
+      "tags": ["scope:familiar", "type:data"]
+    },
     "ui": {
       "tags": ["scope:familiar", "type:ui"]
     }
