@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { FormControllerModule } from './form-controller/form-controller.module';
 
 @NgModule({
-  imports: [CommonModule],
+  imports: [FormControllerModule],
+  exports: [FormControllerModule],
 })
 export class UiModule {}

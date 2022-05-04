@@ -1,0 +1,21 @@
+:host {
+  display: block;
+
+  form {
+    display: flex;
+    flex-direction: row;
+    margin-top: 2rem;
+
+    #direction {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+    }    
+    
+    #buttons {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      grid-auto-flow: column;
+      height: 125px;
+    }
+  }
+}
