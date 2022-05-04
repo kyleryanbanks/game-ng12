@@ -40,6 +40,9 @@
     "game-loop": {
       "tags": ["scope:game-loop", "type:service"]
     },
-    "roost": {}
+    "roost": {},
+    "ui": {
+      "tags": ["scope:familiar", "type:ui"]
+    }
   }
 }
