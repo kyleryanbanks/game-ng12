@@ -64,11 +64,11 @@ export interface DS4InputReport {
   reportObj: ReportObject;
   _dpadH: number;
   _dpadV: number;
-  updateButton: (name: DS4_BUTTONS, value: boolean) => void;
-  updateAxis: (name: DS4_DPAD_DIRECTIONS, value: boolean) => void;
+  updateButton: (name: string, value: boolean) => void;
+  updateAxis: (name: string, value: boolean) => void;
 
-  getButtonValue: (name: DS4_BUTTONS) => boolean;
-  getAxisValue: (name: DS4_BUTTONS) => number;
+  getButtonValue: (name: string) => boolean;
+  getAxisValue: (name: string) => number;
 
   reset: () => void;
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ControllerService } from '@game-ng12/controller';
 import { GameLoopService } from '@game-ng12/game-loop';
+import { DS4_BUTTONS, DS4_DPAD_DIRECTIONS } from 'vigemclient/lib/common';
 
 @Component({
   selector: 'fam-root',
@@ -8,6 +9,8 @@ import { GameLoopService } from '@game-ng12/game-loop';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  _DIR = DS4_DPAD_DIRECTIONS;
+  _BTN = DS4_BUTTONS;
   connected = false;
   turtling = false;
 
@@ -24,10 +27,5 @@ export class AppComponent {
   onConnect() {
     this.controller.connect();
     this.connected = true;
-  }
-
-  onToggle() {
-    this.turtling = !this.turtling;
-    this.turtling ? this.controller.turtle() : this.controller.chill();
   }
 }

@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
-import { DS4Controller } from './controller.model';
+import {
+  DS4Controller,
+  DS4_BUTTONS,
+  DS4_DPAD_DIRECTIONS,
+  DS4_SPECIAL_BUTTONS,
+} from './controller.model';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ViGEmClient = (window as any).require('vigemclient');
 
@@ -14,6 +19,8 @@ export class ControllerService {
     this.client = new ViGEmClient();
     this.connectionError = this.client.connect();
     this.controller = this.client.createDS4Controller();
+    // Set inputs to neutral
+    this.controller._report.reportObj.wButtons = 8;
   }
 
   get report() {
@@ -28,8 +35,42 @@ export class ControllerService {
     return this.report.reportObj.wButtons >> 4;
   }
 
-  get directions() {
+  get direction() {
     return this.report.reportObj.wButtons & 0xf;
+  }
+
+  get directionName() {
+    return DS4_DPAD_DIRECTIONS[this.direction];
+  }
+
+  setNeutral() {
+    this.controller._report.reportObj.wButtons = 8;
+    this.controller._report.reportObj.bSpecial = 0;
+    this.controller.update();
+  }
+
+  setSpecial(buttonIndex: DS4_SPECIAL_BUTTONS, value: boolean) {
+    if (value) {
+      this.controller._report.reportObj.bSpecial |= buttonIndex;
+    } else {
+      this.controller._report.reportObj.bSpecial &= ~buttonIndex;
+    }
+    this.controller.update();
+  }
+
+  setButton(buttonIndex: DS4_BUTTONS, value: boolean) {
+    if (value) {
+      this.controller._report.reportObj.wButtons |= buttonIndex;
+    } else {
+      this.controller._report.reportObj.wButtons &= ~buttonIndex;
+    }
+    this.controller.update();
+  }
+
+  setDirection(directionValue: DS4_DPAD_DIRECTIONS) {
+    this.controller._report.reportObj.wButtons &= 0xfff0; // reset dpad
+    this.controller._report.reportObj.wButtons |= directionValue;
+    this.controller.update();
   }
 
   connect() {
@@ -38,19 +79,5 @@ export class ControllerService {
 
   disconnect() {
     this.controller.disconnect();
-  }
-
-  turtle() {
-    this.controller.axis.dpadHorz.setValue(1);
-    this.controller.axis.dpadVert.setValue(-1);
-  }
-
-  chill() {
-    this.controller.axis.dpadHorz.setValue(0);
-    this.controller.axis.dpadVert.setValue(0);
-  }
-
-  start() {
-    this.controller.button.OPTIONS.setValue(true);
   }
 }

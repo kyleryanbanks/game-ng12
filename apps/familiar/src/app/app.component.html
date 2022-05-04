@@ -1,15 +1,63 @@
-<div id="header">Drag Me</div>
+<!-- <div id="header">Drag Me</div> -->
 
 <div style="text-align: center">
   <h1>Welcome to Familiar!</h1>
   <button (click)="onConnect()">Connect</button>
   <button (click)="onDisconnect()">Disconnect</button>
-  <button (click)="controller.start()">P2 Start</button>
-  <button (click)="onToggle()">{{ turtling ? 'Neutral' : "Down Back"}}</button>
+  <button (click)="controller.setNeutral()">Neutral</button>
+  <button (click)="controller.setButton(_BTN.OPTIONS, true)">P2 Start</button>
+  <button (click)="controller.setDirection(_DIR.DPAD_SOUTHEAST)">Down Back</button>
 </div>
 
 <div>Plugged In: {{ connected }}</div>
-<div>Current State: {{ turtling ? 'Down Back' : "Neutral" }}</div>
+
+<form>
+  <fieldset>
+    <legend>Direction</legend>
+    <div>
+      <input type="radio" id="DPAD_NORTHWEST"
+       name="direction" [value]="_DIR.DPAD_NORTHWEST">
+      <label for="DPAD_NORTHWEST">NW</label>
+
+      <input type="radio" id="DPAD_NORTH"
+       name="direction" [value]="_DIR.DPAD_NORTH">
+      <label for="DPAD_NORTH">N</label>
+
+      <input type="radio" id="DPAD_NORTHEAST"
+       name="direction" [value]="_DIR.DPAD_NORTHEAST">
+      <label for="DPAD_NORTHEAST">NE</label>
+    </div>
+    <div>
+      <input type="radio" id="DPAD_WEST"
+       name="direction" [value]="_DIR.DPAD_WEST">
+      <label for="DPAD_WEST">W</label>
+
+      <input type="radio" id="DPAD_NONE"
+       name="direction" [value]="_DIR.DPAD_NONE">
+      <label for="DPAD_NONE">Nu</label>
+
+      <input type="radio" id="DPAD_EAST"
+       name="direction" [value]="_DIR.DPAD_EAST">
+      <label for="DPAD_EAST">E</label>
+    </div>
+    <div>
+      <input type="radio" id="DPAD_SOUTHWEST"
+       name="direction" [value]="_DIR.DPAD_SOUTHWEST">
+      <label for="DPAD_SOUTHWEST">SW</label>
+
+      <input type="radio" id="DPAD_SOUTH"
+       name="direction" [value]="_DIR.DPAD_SOUTH">
+      <label for="DPAD_SOUTH">S</label>
+
+      <input type="radio" id="DPAD_SOUTHEAST"
+       name="direction" [value]="_DIR.DPAD_SOUTHEAST">
+      <label for="DPAD_SOUTHEAST">SE</label>
+    </div>
+  </fieldset>
+  <div>
+    <button type="submit">Submit</button>
+  </div>
+</form>
 
 <div *ngIf="connected">
   <h2>
@@ -19,10 +67,13 @@
     in Binary: {{ controller.inputs.toString(2).padStart(16, '0') }} 
   </p>
   <h2>
-    directions: {{ controller.directions }}
+    directions: {{ controller.direction }}
   </h2>
   <p>
-    in Binary: {{ controller.directions.toString(2).padStart(4, '0') }} 
+    in Binary: {{ controller.direction.toString(2).padStart(4, '0') }} 
+  </p>
+  <p>
+    by name: {{ controller.directionName }} 
   </p>
   <h2>
     buttons: {{ controller.buttons }}
@@ -30,8 +81,4 @@
   <p>
     in Binary: {{ controller.buttons.toString(2).padStart(12, '0') }} 
   </p>
-</div>
-
-<div>
-  <h2>Frame: {{ gameLoop | json }}</h2>
 </div>
