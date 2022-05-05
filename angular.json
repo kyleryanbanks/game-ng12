@@ -266,6 +266,31 @@
         }
       }
     },
+    "sequencer-shell": {
+      "projectType": "library",
+      "root": "libs/sequencer/shell",
+      "sourceRoot": "libs/sequencer/shell/src",
+      "prefix": "seq",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/sequencer/shell"],
+          "options": {
+            "jestConfig": "libs/sequencer/shell/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/sequencer/shell/src/**/*.ts",
+              "libs/sequencer/shell/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "ui": {
       "projectType": "library",
       "root": "libs/ui",

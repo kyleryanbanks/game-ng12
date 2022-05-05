@@ -44,6 +44,9 @@
     "sequencer-data": {
       "tags": ["scope:familiar", "type:data"]
     },
+    "sequencer-shell": {
+      "tags": ["scope:familiar", "type:shell"]
+    },
     "ui": {
       "tags": ["scope:familiar", "type:ui"]
     }
