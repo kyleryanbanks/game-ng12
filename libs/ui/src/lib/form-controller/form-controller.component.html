@@ -1,14 +1,3 @@
-<section>
-  <div>
-    <h3>Current Input</h3>
-    <pre>{{ controller.value | json }}</pre>
-  </div>
-  <div>
-    <h3>Prev Input</h3>
-    <pre> {{ lastFrame | json }}</pre>
-  </div>
-</section>
-
 <form [formGroup]="controller" (ngSubmit)="onSubmit()">
   <fieldset id="direction">
     <legend>Direction</legend>
@@ -165,3 +154,14 @@
 
   <button type="submit">Submit</button>
 </form>
+
+<section>
+  <div>
+    <h3>Current Input</h3>
+    <pre>{{ controller.value | json }}</pre>
+  </div>
+  <div>
+    <h3>Prev Input</h3>
+    <pre> {{ lastFrame | json }}</pre>
+  </div>
+</section>
