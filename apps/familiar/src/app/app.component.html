@@ -13,7 +13,7 @@
 
 <div>Plugged In: {{ connected }}</div>
 
-<fam-form-controller (frame)="onFrame($event)"></fam-form-controller>
+<seq-shell (frame)="onFrame($event)"></seq-shell>
 
 <div *ngIf="connected">
   <h2>Input: {{ controller.inputs }}</h2>

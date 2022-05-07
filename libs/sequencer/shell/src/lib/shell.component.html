@@ -1,0 +1,11 @@
+<button (click)="onPlay()">Play Sequence</button>
+
+<ol
+  cdkDropList
+  [cdkDropListData]="frames"
+  (cdkDropListDropped)="onReorder($event)"
+>
+  <li *ngFor="let frame of frames" cdkDrag>{{ frame }}</li>
+</ol>
+
+<fam-form-controller (frame)="onFrame($event)"></fam-form-controller>>
