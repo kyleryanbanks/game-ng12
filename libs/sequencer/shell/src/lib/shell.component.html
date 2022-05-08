@@ -1,11 +1,19 @@
-<button (click)="onPlay()">Play Sequence</button>
+<div class="controls">
+  <button [disabled]="!connected" (click)="onPlay()">Play Sequence</button>
+  <button [disabled]="!connected" (click)="onNeutral()">Neutral</button>
+  <button (click)="onClear()">Clear</button>
+</div>
 
-<ol
+<div
+  class="drag-list"
+  cdkScrollable
   cdkDropList
-  [cdkDropListData]="frames"
+  [cdkDropListData]="sequence"
   (cdkDropListDropped)="onReorder($event)"
 >
-  <li *ngFor="let frame of frames" cdkDrag>{{ frame }}</li>
-</ol>
+  <div class="drag-item" *ngFor="let term of sequence" cdkDrag>
+    Input: {{ term.input }} for {{ term.hold }} frame/s
+  </div>
+</div>
 
-<fam-form-controller (frame)="onFrame($event)"></fam-form-controller>>
+<fam-form-controller (frame)="onFrame($event)"></fam-form-controller>

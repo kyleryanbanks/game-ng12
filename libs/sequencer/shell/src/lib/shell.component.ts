@@ -3,8 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
 } from '@angular/core';
+import { Term } from '@game-ng12/controller';
 import { from, of } from 'rxjs';
 import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
 
@@ -15,16 +17,26 @@ import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent {
-  frames: number[] = [];
+  sequence: Term[] = [];
+  @Input() connected = false;
   @Output() frame = new EventEmitter<number>();
+  @Output() neutral = new EventEmitter<null>();
+
+  onClear() {
+    this.sequence = [];
+  }
+
+  onNeutral() {
+    this.neutral.emit();
+  }
 
   onPlay() {
-    from(this.frames)
+    from(this.sequence)
       .pipe(
-        concatMap((i) =>
-          of(i).pipe(
-            delay(500), // slow for demo purposes
-            tap((frame) => this.frame.emit(frame))
+        concatMap((input) =>
+          of(input).pipe(
+            delay(100 * input.hold),
+            tap((frame) => this.frame.emit(frame.input))
           )
         ),
         tap(console.log),
@@ -34,11 +46,11 @@ export class ShellComponent {
       .subscribe();
   }
 
-  onFrame(frame: number) {
-    this.frames.push(frame);
+  onFrame(term: Term) {
+    this.sequence.push(term);
   }
 
-  onReorder(event: CdkDragDrop<number[]>) {
+  onReorder(event: CdkDragDrop<Term[]>) {
     moveItemInArray(
       event.container.data,
       event.previousIndex,
