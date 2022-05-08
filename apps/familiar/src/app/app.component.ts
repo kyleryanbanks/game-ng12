@@ -12,7 +12,6 @@ export class AppComponent {
   _DIR = DS4_DPAD_DIRECTIONS;
   _BTN = DS4_BUTTONS;
   connected = false;
-  turtling = false;
 
   constructor(
     public controller: ControllerService,
