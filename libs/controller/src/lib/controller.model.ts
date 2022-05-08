@@ -118,3 +118,8 @@ export interface ViGEmTarget<B extends string, A extends string> {
 export interface DS4Controller extends ViGEmTarget<TDS4Buttons, TDS4Axis> {
   _report: DS4InputReport;
 }
+
+export interface Term {
+  input: number;
+  hold: number;
+}

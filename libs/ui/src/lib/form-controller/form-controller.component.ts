@@ -5,7 +5,7 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DS4_BUTTONS, DS4_DPAD_DIRECTIONS } from '@game-ng12/controller';
+import { DS4_BUTTONS, DS4_DPAD_DIRECTIONS, Term } from '@game-ng12/controller';
 
 @Component({
   selector: 'fam-form-controller',
@@ -17,12 +17,13 @@ export class FormControllerComponent {
   _DIR = DS4_DPAD_DIRECTIONS;
   _BTN = DS4_BUTTONS;
   controller: FormGroup;
-  lastFrame = {};
+  lastInput = {};
 
-  @Output() frame = new EventEmitter<number>();
+  @Output() frame = new EventEmitter<Term>();
 
   constructor(fb: FormBuilder) {
     this.controller = fb.group({
+      hold: [1],
       direction: [8],
       buttons: fb.group({
         THUMB_RIGHT: [false],
@@ -59,13 +60,15 @@ export class FormControllerComponent {
     }, 0);
 
     const direction = this.controller.controls.direction.value;
-    const wButtons = buttonInputs | direction;
+    const input = buttonInputs | direction;
+    this.lastInput = input;
 
-    this.lastFrame = wButtons;
+    const hold = this.controller.controls.hold.value;
 
-    this.frame.emit(wButtons);
+    this.frame.emit({ input, hold });
 
     this.controller.reset({
+      hold: [1],
       direction: 8,
       buttons: {
         THUMB_RIGHT: false,

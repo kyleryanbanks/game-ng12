@@ -1,27 +1,32 @@
 :host {
   display: block;
 
-  section {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+  div,
+  span {
+    margin-bottom: 1rem;
   }
 
-  form {
+  #controller-inputs {
     display: flex;
     flex-direction: row;
-    margin-top: 2rem;
 
     #direction {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-    }    
-    
+    }
+
     #buttons {
       display: grid;
       grid-template-rows: 1fr 1fr 1fr 1fr;
       grid-auto-flow: column;
       height: 125px;
     }
+  }
+
+  .submit-tray {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }
