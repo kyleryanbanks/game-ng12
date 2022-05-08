@@ -68,7 +68,7 @@ export class FormControllerComponent {
     this.frame.emit({ input, hold });
 
     this.controller.reset({
-      hold: [1],
+      hold: 1,
       direction: 8,
       buttons: {
         THUMB_RIGHT: false,
