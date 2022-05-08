@@ -35,7 +35,7 @@ export class ShellComponent {
       .pipe(
         concatMap((input) =>
           of(input).pipe(
-            delay(100 * input.hold),
+            delay(17 * input.hold),
             tap((frame) => this.frame.emit(frame.input))
           )
         ),
