@@ -1,26 +1,14 @@
 <!-- <div id="header">Drag Me</div> -->
 
-<div style="text-align: center">
-  <h1>Welcome to Familiar!</h1>
-  <button (click)="onConnect()">Connect</button>
-  <button (click)="onDisconnect()">Disconnect</button>
-  <button (click)="controller.setNeutral()">Neutral</button>
-  <button (click)="controller.setButton(_BTN.OPTIONS, true)">P2 Start</button>
-  <button (click)="controller.setDirection(_DIR.DPAD_SOUTHEAST)">
-    Down Back
-  </button>
+<h1>Welcome to Familiar!</h1>
+
+<div class="controls">
+  <button [disabled]="connected" (click)="onConnect()">Connect</button>
+  <button [disabled]="!connected" (click)="onDisconnect()">Disconnect</button>
 </div>
 
-<div>Plugged In: {{ connected }}</div>
-
-<seq-shell (frame)="onFrame($event)"></seq-shell>
-
-<div *ngIf="connected">
-  <h2>Input: {{ controller.inputs }}</h2>
-  <p>in Binary: {{ controller.inputs.toString(2).padStart(16, '0') }}</p>
-  <h2>directions: {{ controller.direction }}</h2>
-  <p>in Binary: {{ controller.direction.toString(2).padStart(4, '0') }}</p>
-  <p>by name: {{ controller.directionName }}</p>
-  <h2>buttons: {{ controller.buttons }}</h2>
-  <p>in Binary: {{ controller.buttons.toString(2).padStart(12, '0') }}</p>
-</div>
+<seq-shell
+  [connected]="connected"
+  (frame)="onFrame($event)"
+  (neutral)="controller.setNeutral()"
+></seq-shell>

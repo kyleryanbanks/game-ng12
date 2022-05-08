@@ -23,13 +23,13 @@ export class AppComponent {
     this.controller.setButtons(wButtons);
   }
 
-  onDisconnect() {
-    this.controller.disconnect();
-    this.connected = false;
-  }
-
   onConnect() {
     this.controller.connect();
     this.connected = true;
+  }
+
+  onDisconnect() {
+    this.controller.disconnect();
+    this.connected = false;
   }
 }
