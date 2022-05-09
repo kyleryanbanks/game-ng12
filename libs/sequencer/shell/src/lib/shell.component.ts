@@ -35,15 +35,15 @@ export class ShellComponent {
       .pipe(
         concatMap((input) =>
           of(input).pipe(
-            delay(17 * input.hold),
-            tap((frame) => this.frame.emit(frame.input))
+            tap((frame) => this.frame.emit(frame.input)),
+            delay(18 * input.hold)
           )
         ),
         tap(console.log),
         timeInterval(),
         tap(console.log)
       )
-      .subscribe();
+      .subscribe({ complete: () => this.frame.emit(8) });
   }
 
   onFrame(term: Term) {
