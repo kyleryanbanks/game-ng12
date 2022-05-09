@@ -66,7 +66,7 @@ export default class App {
       width: width,
       height: height,
       show: false,
-      // alwaysOnTop: true,
+      alwaysOnTop: true,
       // titleBarStyle: 'default',
       //transparent: true,
       //frame: false,
