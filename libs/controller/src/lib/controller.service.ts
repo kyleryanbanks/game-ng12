@@ -19,8 +19,14 @@ export class ControllerService {
     this.client = new ViGEmClient();
     this.connectionError = this.client.connect();
     this.controller = this.client.createDS4Controller();
-    // Set inputs to neutral
-    this.controller._report.reportObj.wButtons = 8;
+  }
+
+  connect() {
+    this.controller.connect();
+  }
+
+  disconnect() {
+    this.controller.disconnect();
   }
 
   get report() {
@@ -49,9 +55,7 @@ export class ControllerService {
   }
 
   setNeutral() {
-    this.controller._report.reportObj.wButtons = 8;
-    this.controller._report.reportObj.bSpecial = 0;
-    this.controller.update();
+    this.controller.resetInputs();
   }
 
   setSpecial(buttonIndex: DS4_SPECIAL_BUTTONS, value: boolean) {
@@ -76,13 +80,5 @@ export class ControllerService {
     this.controller._report.reportObj.wButtons &= 0xfff0; // reset dpad
     this.controller._report.reportObj.wButtons |= directionValue;
     this.controller.update();
-  }
-
-  connect() {
-    this.controller.connect();
-  }
-
-  disconnect() {
-    this.controller.disconnect();
   }
 }
