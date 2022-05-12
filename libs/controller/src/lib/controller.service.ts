@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import {
   DS4Controller,
   DS4_BUTTONS,
   DS4_DPAD_DIRECTIONS,
   DS4_SPECIAL_BUTTONS,
 } from './controller.model';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ViGEmClient = (window as any).require('vigemclient');
 
 @Injectable({ providedIn: 'root' })
