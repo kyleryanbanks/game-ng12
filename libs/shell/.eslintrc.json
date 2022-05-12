@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "gameNg12",
+            "prefix": "fam",
             "style": "camelCase"
           }
         ],
@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "game-ng12",
+            "prefix": "fam",
             "style": "kebab-case"
           }
         ]
