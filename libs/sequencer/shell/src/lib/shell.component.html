@@ -1,4 +1,11 @@
 <div class="controls">
+  <button [disabled]="connected" (click)="controller.connect()">Connect</button>
+  <button [disabled]="!connected" (click)="controller.disconnect()">
+    Disconnect
+  </button>
+</div>
+
+<div class="controls">
   <button [disabled]="!connected" (click)="onPlay()">Play Sequence</button>
   <button [disabled]="!connected" (click)="onNeutral()">Neutral</button>
   <button (click)="onClear()">Clear</button>

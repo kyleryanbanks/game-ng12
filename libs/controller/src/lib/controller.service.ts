@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject, Subject } from 'rxjs';
 import {
   DS4Controller,
   DS4_BUTTONS,
@@ -12,8 +13,9 @@ const ViGEmClient = (window as any).require('vigemclient');
 export class ControllerService {
   client; // new ViGEmClient();
   connectionError: Error | null = null; // this.client.connect()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   controller: DS4Controller; //this.client.createDS4Controller();
+
+  _connected = new BehaviorSubject(false);
 
   constructor() {
     this.client = new ViGEmClient();
@@ -23,10 +25,16 @@ export class ControllerService {
 
   connect() {
     this.controller.connect();
+    this._connected.next(true);
   }
 
   disconnect() {
     this.controller.disconnect();
+    this._connected.next(false);
+  }
+
+  get connected() {
+    return this._connected.asObservable();
   }
 
   get report() {

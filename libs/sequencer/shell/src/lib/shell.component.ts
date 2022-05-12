@@ -2,48 +2,39 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  OnDestroy,
+  OnInit,
 } from '@angular/core';
-import { Term } from '@game-ng12/controller';
-import { from, of } from 'rxjs';
+import { ControllerService, Term } from '@game-ng12/controller';
+import { from, of, Subscription } from 'rxjs';
 import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
 
 @Component({
-  selector: 'seq-shell',
   templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ShellComponent {
+export class ShellComponent implements OnInit, OnDestroy {
   sequence: Term[] = [];
-  @Input() connected = false;
-  @Output() frame = new EventEmitter<number>();
-  @Output() neutral = new EventEmitter<null>();
+  subscriptions = new Subscription();
+  connected = false;
+
+  constructor(public controller: ControllerService) {}
+
+  ngOnInit() {
+    this.subscriptions.add(
+      this.controller.connected.subscribe((connected) => {
+        this.connected = connected;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 
   onClear() {
     this.sequence = [];
-  }
-
-  onNeutral() {
-    this.neutral.emit();
-  }
-
-  onPlay() {
-    from(this.sequence)
-      .pipe(
-        concatMap((input) =>
-          of(input).pipe(
-            tap((frame) => this.frame.emit(frame.input)),
-            delay(18 * input.hold)
-          )
-        ),
-        tap(console.log),
-        timeInterval(),
-        tap(console.log)
-      )
-      .subscribe({ complete: () => this.frame.emit(8) });
   }
 
   onFrame(term: Term) {
@@ -56,5 +47,25 @@ export class ShellComponent {
       event.previousIndex,
       event.currentIndex
     );
+  }
+
+  onNeutral() {
+    this.controller.setNeutral();
+  }
+
+  onPlay() {
+    from(this.sequence)
+      .pipe(
+        concatMap((input) =>
+          of(input).pipe(
+            tap((frame) => this.controller.setButtons(frame.input)),
+            delay(18 * input.hold)
+          )
+        ),
+        tap(console.log),
+        timeInterval(),
+        tap(console.log)
+      )
+      .subscribe({ complete: () => this.controller.setNeutral() });
   }
 }
