@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 @Component({
   selector: 'fam-shell',
   template: `<h1>Welcome to Familiar!</h1>
+    <a routerLink="sequencer">Sequencer</a>
+    <a routerLink="">Input Viewer</a>
     <router-outlet></router-outlet>`,
   styles: [
     `
@@ -10,15 +12,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: space-around;
-        color: white;
-      }
-
-      #header {
-        height: 2rem;
-        width: 100vw;
-        background-color: red;
-        -webkit-app-region: drag;
       }
     `,
   ],
