@@ -173,6 +173,31 @@
         }
       }
     },
+    "input-viewer-shell": {
+      "projectType": "library",
+      "root": "libs/input-viewer/shell",
+      "sourceRoot": "libs/input-viewer/shell/src",
+      "prefix": "view",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/input-viewer/shell"],
+          "options": {
+            "jestConfig": "libs/input-viewer/shell/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/input-viewer/shell/src/**/*.ts",
+              "libs/input-viewer/shell/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "roost": {
       "root": "apps/roost",
       "sourceRoot": "apps/roost/src",

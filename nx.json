@@ -40,6 +40,9 @@
     "game-loop": {
       "tags": ["scope:game-loop", "type:service"]
     },
+    "input-viewer-shell": {
+      "tags": ["scope:familiar", "type:shell"]
+    },
     "roost": {},
     "sequencer-data": {
       "tags": ["scope:familiar", "type:data"]
