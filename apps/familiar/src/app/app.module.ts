@@ -1,12 +1,10 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { SequencerShellModule } from '@game-ng12/sequencer/shell';
-import { UiModule } from '@game-ng12/ui';
+import { ShellModule } from '@game-ng12/shell';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, UiModule, SequencerShellModule],
+  imports: [ShellModule],
   providers: [],
   bootstrap: [AppComponent],
 })
