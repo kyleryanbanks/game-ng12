@@ -20,7 +20,7 @@ export class ElectronGuard implements CanLoad {
       typeof window.process === 'object' &&
       window.process.type === 'renderer'
     ) {
-      return false;
+      return true;
     }
 
     // Main process
@@ -29,7 +29,7 @@ export class ElectronGuard implements CanLoad {
       typeof process.versions === 'object' &&
       !!process.versions.electron
     ) {
-      return false;
+      return true;
     }
 
     // Detect the user agent when the `nodeIntegration` option is set to true
@@ -38,9 +38,10 @@ export class ElectronGuard implements CanLoad {
       typeof navigator.userAgent === 'string' &&
       navigator.userAgent.indexOf('Electron') >= 0
     ) {
-      return false;
+      return true;
     }
 
-    return true;
+    console.error('Must be viewing through Roost.');
+    return false;
   }
 }
