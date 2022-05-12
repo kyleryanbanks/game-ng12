@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ShellModule } from '@game-ng12/shell';
+import { FamiliarShellModule } from '@game-ng12/familiar-shell';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, ShellModule],
+  imports: [BrowserModule, FamiliarShellModule],
   providers: [],
   bootstrap: [AppComponent],
 })

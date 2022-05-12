@@ -148,6 +148,31 @@
         }
       }
     },
+    "familiar-shell": {
+      "projectType": "library",
+      "root": "libs/familiar/shell",
+      "sourceRoot": "libs/familiar/shell/src",
+      "prefix": "game-ng12",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/familiar/shell"],
+          "options": {
+            "jestConfig": "libs/familiar/shell/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/familiar/shell/src/**/*.ts",
+              "libs/familiar/shell/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "game-loop": {
       "projectType": "library",
       "root": "libs/game-loop",
@@ -311,31 +336,6 @@
             "lintFilePatterns": [
               "libs/sequencer/shell/src/**/*.ts",
               "libs/sequencer/shell/src/**/*.html"
-            ]
-          }
-        }
-      }
-    },
-    "shell": {
-      "projectType": "library",
-      "root": "libs/shell",
-      "sourceRoot": "libs/shell/src",
-      "prefix": "game-ng12",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/shell"],
-          "options": {
-            "jestConfig": "libs/shell/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/shell/src/**/*.ts",
-              "libs/shell/src/**/*.html"
             ]
           }
         }

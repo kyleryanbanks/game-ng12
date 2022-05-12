@@ -37,6 +37,9 @@
       "tags": [],
       "implicitDependencies": ["familiar"]
     },
+    "familiar-shell": {
+      "tags": ["scope:familiar", "type:shell"]
+    },
     "game-loop": {
       "tags": ["scope:game-loop", "type:service"]
     },
@@ -48,9 +51,6 @@
       "tags": ["scope:familiar", "type:data"]
     },
     "sequencer-shell": {
-      "tags": ["scope:familiar", "type:shell"]
-    },
-    "shell": {
       "tags": ["scope:familiar", "type:shell"]
     },
     "ui": {

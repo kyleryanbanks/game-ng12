@@ -25,4 +25,4 @@ export const routes: Route[] = [
   declarations: [ShellComponent],
   exports: [ShellComponent],
 })
-export class ShellModule {}
+export class FamiliarShellModule {}
