@@ -291,6 +291,31 @@
         }
       }
     },
+    "shell": {
+      "projectType": "library",
+      "root": "libs/shell",
+      "sourceRoot": "libs/shell/src",
+      "prefix": "game-ng12",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/shell"],
+          "options": {
+            "jestConfig": "libs/shell/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/shell/src/**/*.ts",
+              "libs/shell/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "ui": {
       "projectType": "library",
       "root": "libs/ui",
