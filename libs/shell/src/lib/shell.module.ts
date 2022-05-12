@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Route, RouterModule } from '@angular/router';
 import { SequencerShellModule } from '@game-ng12/sequencer/shell';
 import { UiModule } from '@game-ng12/ui';
+import { ElectronGuard } from './electron.guard';
 import { ShellComponent } from './shell.component';
 
 export const routes: Route[] = [
@@ -13,6 +14,14 @@ export const routes: Route[] = [
     children: [
       {
         path: '',
+        loadChildren: () =>
+          import('@game-ng12/input-viewer/shell').then(
+            (m) => m.InputViewerShellModule
+          ),
+      },
+      {
+        path: 'sequencer',
+        canLoad: [ElectronGuard],
         loadChildren: () =>
           import('@game-ng12/sequencer/shell').then(
             (m) => m.SequencerShellModule

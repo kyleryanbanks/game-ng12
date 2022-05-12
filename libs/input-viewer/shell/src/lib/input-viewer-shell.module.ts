@@ -1,13 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Route, RouterModule } from '@angular/router';
+import { ShellComponent } from './shell.component';
+
+export const routes: Route[] = [
+  {
+    path: '',
+    component: ShellComponent,
+  },
+];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild([
-      /* {path: '', pathMatch: 'full', component: InsertYourComponentHere} */
-    ]),
-  ],
+  imports: [CommonModule, RouterModule.forChild(routes)],
+  declarations: [ShellComponent],
 })
 export class InputViewerShellModule {}
