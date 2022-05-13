@@ -5,16 +5,14 @@ import {
   expand,
   filter,
   map,
+  scan,
   share,
   switchMap,
   takeUntil,
   tap,
+  withLatestFrom,
 } from 'rxjs/operators';
-
-export interface IFrameData {
-  frameStartTime: number;
-  deltaTime: number;
-}
+import { Frame, GamepadButtons, IFrameData } from './game-loop.models';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +24,7 @@ export class GameLoopService {
   calculateStep: (prevFrame?: IFrameData) => Observable<IFrameData> = (
     prevFrame?: IFrameData
   ) => {
-    return Observable.create((observer: Observer<IFrameData>) => {
+    return new Observable((observer: Observer<IFrameData>) => {
       requestAnimationFrame((frameStartTime) => {
         // Milliseconds to seconds
         const deltaTime = prevFrame
@@ -53,7 +51,7 @@ export class GameLoopService {
       // Expand emits the first value provided to it, and in this
       // case we just want to ignore the undefined input frame
       filter((lastFrame) => lastFrame !== undefined),
-      tap((frame) => console.log(frame)),
+      // tap((frame) => console.log(frame)),
       // map((lastFrame: IFrameData) => lastFrame.deltaTime),
       share()
     );
@@ -61,19 +59,18 @@ export class GameLoopService {
 
   getButtonsPerFrames() {
     return this.connected$.pipe(
-      tap(console.log),
+      // tap(console.log),
       map((event) => event.gamepad.index),
       switchMap((id: number) => {
         return this.getFrames().pipe(
-          map(() => {
-            const pad = navigator.getGamepads()[id];
-            return pad?.buttons.reduce<{ [index: string]: boolean }>(
-              (buttons, button, index) => {
-                buttons[index] = button.pressed;
-                return buttons;
-              },
-              {}
-            );
+          map(() => navigator.getGamepads()[id]),
+          map((pad) => {
+            return pad
+              ? pad.buttons.reduce<GamepadButtons>((buttons, button, index) => {
+                  buttons[index] = button.pressed;
+                  return buttons;
+                }, {})
+              : {};
           }),
           distinctUntilChanged(),
           takeUntil(this.disconnected$)
@@ -97,7 +94,7 @@ export class GameLoopService {
     );
   }
 
-  getDirection(): Observable<number | null> {
+  getDirection(): Observable<number> {
     return this.getButtonsPerFrames().pipe(
       map((buttons) => {
         const UP = buttons?.['12'] || false;
@@ -122,19 +119,31 @@ export class GameLoopService {
         } else if (UP && LEFT) {
           return 7;
         } else {
-          return null;
+          return 8;
         }
       })
     );
   }
 
   getInputs() {
-    return combineLatest([this.getDirection(), this.getMappedButtons()]).pipe(
-      distinctUntilChanged((prev, next) => {
-        console.log(prev, next);
-        return prev === next;
-      })
-      // scan((acc, [direction, buttons]) => [...acc, { direction, buttons }], [])
+    return this.getDirection().pipe(
+      withLatestFrom(this.getMappedButtons()),
+      distinctUntilChanged(
+        ([prevDirection, prevButtons], [direction, buttons]) => {
+          console.log({ prevDirection, prevButtons, direction, buttons });
+          return (
+            prevDirection === direction &&
+            JSON.stringify(prevButtons) === JSON.stringify(buttons)
+          );
+        }
+      ),
+      scan(
+        (acc: Frame[], [direction, buttons]) =>
+          acc.length > 50
+            ? [{ direction, buttons }]
+            : [...acc, { direction, buttons }],
+        []
+      )
     );
   }
 }
