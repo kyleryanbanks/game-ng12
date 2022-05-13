@@ -19,6 +19,7 @@
       "@game-ng12/familiar-shell": ["libs/familiar/shell/src/index.ts"],
       "@game-ng12/game-loop": ["libs/game-loop/src/index.ts"],
       "@game-ng12/input-viewer/shell": ["libs/input-viewer/shell/src/index.ts"],
+      "@game-ng12/input-viewer/ui": ["libs/input-viewer/ui/src/index.ts"],
       "@game-ng12/sequencer/data": ["libs/sequencer/data/src/index.ts"],
       "@game-ng12/sequencer/shell": ["libs/sequencer/shell/src/index.ts"],
       "@game-ng12/ui": ["libs/ui/src/index.ts"]

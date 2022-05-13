@@ -223,6 +223,31 @@
         }
       }
     },
+    "input-viewer-ui": {
+      "projectType": "library",
+      "root": "libs/input-viewer/ui",
+      "sourceRoot": "libs/input-viewer/ui/src",
+      "prefix": "ft",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/input-viewer/ui"],
+          "options": {
+            "jestConfig": "libs/input-viewer/ui/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/input-viewer/ui/src/**/*.ts",
+              "libs/input-viewer/ui/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "roost": {
       "root": "apps/roost",
       "sourceRoot": "apps/roost/src",

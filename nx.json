@@ -46,6 +46,9 @@
     "input-viewer-shell": {
       "tags": ["scope:familiar", "type:shell"]
     },
+    "input-viewer-ui": {
+      "tags": ["scope:familiar", "type:ui"]
+    },
     "roost": {},
     "sequencer-data": {
       "tags": ["scope:familiar", "type:data"]
