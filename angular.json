@@ -43,7 +43,12 @@
             "tsConfig": "apps/familiar/tsconfig.app.json",
             "assets": [
               "apps/familiar/src/favicon.ico",
-              "apps/familiar/src/assets"
+              "apps/familiar/src/assets",
+              {
+                "input": "libs/input-viewer/ui/src/assets",
+                "glob": "**/*",
+                "output": "assets/input-viewer"
+              }
             ],
             "styles": ["apps/familiar/src/styles.css"],
             "scripts": []
