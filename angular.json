@@ -253,6 +253,31 @@
         }
       }
     },
+    "recorder-data": {
+      "projectType": "library",
+      "root": "libs/recorder/data",
+      "sourceRoot": "libs/recorder/data/src",
+      "prefix": "rec",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/recorder/data"],
+          "options": {
+            "jestConfig": "libs/recorder/data/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/recorder/data/src/**/*.ts",
+              "libs/recorder/data/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "roost": {
       "root": "apps/roost",
       "sourceRoot": "apps/roost/src",

@@ -49,6 +49,9 @@
     "input-viewer-ui": {
       "tags": ["scope:familiar", "type:ui"]
     },
+    "recorder-data": {
+      "tags": ["scope:familiar", "type:data"]
+    },
     "roost": {},
     "sequencer-data": {
       "tags": ["scope:familiar", "type:data"]
