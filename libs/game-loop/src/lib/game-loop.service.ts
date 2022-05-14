@@ -1,18 +1,68 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, fromEvent, Observable, Observer, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  fromEvent,
+  interval,
+  Observable,
+  Observer,
+  of,
+  pipe,
+  zip,
+} from 'rxjs';
 import {
   distinctUntilChanged,
+  distinctUntilKeyChanged,
   expand,
   filter,
   map,
+  mapTo,
+  pairwise,
   scan,
   share,
+  startWith,
   switchMap,
   takeUntil,
   tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { Frame, GamepadButtons, IFrameData } from './game-loop.models';
+
+export const deriveDirectionFromButtons = pipe(
+  map((input: { frame: number; buttons: number }) => {
+    const UP = input.buttons & (1 << 12);
+    const DOWN = input.buttons & (1 << 13);
+    const LEFT = input.buttons & (1 << 14);
+    const RIGHT = input.buttons & (1 << 15);
+
+    let cardinalDirection: number;
+
+    if (UP && !RIGHT && !LEFT) {
+      cardinalDirection = 0;
+    } else if (UP && RIGHT) {
+      cardinalDirection = 1;
+    } else if (RIGHT && !UP && !DOWN) {
+      cardinalDirection = 2;
+    } else if (DOWN && RIGHT) {
+      cardinalDirection = 3;
+    } else if (DOWN && !RIGHT && !LEFT) {
+      cardinalDirection = 4;
+    } else if (DOWN && LEFT) {
+      cardinalDirection = 5;
+    } else if (LEFT && !UP && !DOWN) {
+      cardinalDirection = 6;
+    } else if (UP && LEFT) {
+      cardinalDirection = 7;
+    } else {
+      cardinalDirection = 8;
+    }
+
+    return {
+      ...input,
+      cardinalDirection,
+    };
+  })
+);
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +71,16 @@ export class GameLoopService {
   connected$ = fromEvent<GamepadEvent>(window, 'gamepadconnected');
   disconnected$ = fromEvent<GamepadEvent>(window, 'gamepaddisconnected');
 
+  _msDelay = new BehaviorSubject<number>(16.6);
+
+  set msDelay(msDelay: number) {
+    this._msDelay.next(msDelay);
+  }
+
+  get msDelay() {
+    return this._msDelay.getValue();
+  }
+
   calculateStep: (prevFrame?: IFrameData) => Observable<IFrameData> = (
     prevFrame?: IFrameData
   ) => {
@@ -28,7 +88,7 @@ export class GameLoopService {
       requestAnimationFrame((frameStartTime) => {
         // Milliseconds to seconds
         const deltaTime = prevFrame
-          ? (frameStartTime - prevFrame.frameStartTime) / 1000
+          ? frameStartTime - prevFrame.frameStartTime
           : 0;
         observer.next({
           frameStartTime,
@@ -51,97 +111,104 @@ export class GameLoopService {
       // Expand emits the first value provided to it, and in this
       // case we just want to ignore the undefined input frame
       filter((lastFrame) => lastFrame !== undefined),
-      // tap((frame) => console.log(frame)),
+      tap((frame) => console.log(frame)),
       // map((lastFrame: IFrameData) => lastFrame.deltaTime),
       share()
     );
   }
 
-  getButtonsPerFrames() {
+  getButtonsPerFrame() {
     return this.connected$.pipe(
-      // tap(console.log),
-      map((event) => event.gamepad.index),
-      switchMap((id: number) => {
-        return this.getFrames().pipe(
-          map(() => navigator.getGamepads()[id]),
-          map((pad) => {
-            return pad
-              ? pad.buttons.reduce<GamepadButtons>((buttons, button, index) => {
-                  buttons[index] = button.pressed;
-                  return buttons;
-                }, {})
-              : {};
+      withLatestFrom(this._msDelay.asObservable()),
+      map(([event, delay]) => ({
+        index: event.gamepad.index,
+        delay,
+      })),
+      switchMap(({ index, delay }) => {
+        return interval(delay).pipe(
+          map((frame: number) => {
+            const pad = navigator.getGamepads()[index];
+
+            if (pad) {
+              const buttons = pad.buttons.reduce<number>(
+                (bitfield: number, button, index: number) => {
+                  // console.log({
+                  //   after: (bitfield |= button.value << (index)),
+                  //   pad,
+                  //   frame,
+                  //   pressed: button.pressed,
+                  //   value: button.value,
+                  //   index,
+                  //   bitfield,
+                  // });
+                  return (bitfield |= button.value << index);
+                },
+                0
+              );
+              const cardinalDirection =
+                this.deriveCardinalDirectionFromButtons(buttons);
+              return {
+                frame,
+                buttons,
+                cardinalDirection,
+                now: performance.now(),
+              };
+            } else {
+              return {
+                frame,
+                buttons: 0,
+                cardinalDirection: 0,
+                now: performance.now(),
+              };
+            }
           }),
-          distinctUntilChanged(),
+          tap((frame) => console.warn('active frame', { frame })),
           takeUntil(this.disconnected$)
         );
       })
     );
   }
 
-  getMappedButtons() {
-    return this.getButtonsPerFrames().pipe(
-      map((buttons) => {
-        return {
-          TAG: buttons?.['2'] || false,
-          LP: buttons?.['3'] || false,
-          HP: buttons?.['5'] || false,
-          STONE: buttons?.['4'] || false,
-          LK: buttons?.['0'] || false,
-          HK: buttons?.['7'] || false,
-        };
-      })
-    );
-  }
+  deriveCardinalDirectionFromButtons = (buttons: number) => {
+    const UP = buttons & (1 << 12);
+    const DOWN = buttons & (1 << 13);
+    const LEFT = buttons & (1 << 14);
+    const RIGHT = buttons & (1 << 15);
 
-  getDirection(): Observable<number> {
-    return this.getButtonsPerFrames().pipe(
-      map((buttons) => {
-        const UP = buttons?.['12'] || false;
-        const DOWN = buttons?.['13'] || false;
-        const LEFT = buttons?.['14'] || false;
-        const RIGHT = buttons?.['15'] || false;
+    if (UP && !RIGHT && !LEFT) {
+      return 8;
+    } else if (UP && RIGHT) {
+      return 1;
+    } else if (RIGHT && !UP && !DOWN) {
+      return 2;
+    } else if (DOWN && RIGHT) {
+      return 3;
+    } else if (DOWN && !RIGHT && !LEFT) {
+      return 4;
+    } else if (DOWN && LEFT) {
+      return 5;
+    } else if (LEFT && !UP && !DOWN) {
+      return 6;
+    } else if (UP && LEFT) {
+      return 7;
+    } else {
+      return 0;
+    }
+  };
 
-        if (UP && !RIGHT && !LEFT) {
-          return 0;
-        } else if (UP && RIGHT) {
-          return 1;
-        } else if (RIGHT && !UP && !DOWN) {
-          return 2;
-        } else if (DOWN && RIGHT) {
-          return 3;
-        } else if (DOWN && !RIGHT && !LEFT) {
-          return 4;
-        } else if (DOWN && LEFT) {
-          return 5;
-        } else if (LEFT && !UP && !DOWN) {
-          return 6;
-        } else if (UP && LEFT) {
-          return 7;
-        } else {
-          return 8;
-        }
-      })
-    );
-  }
-
-  getInputs() {
-    return this.getDirection().pipe(
-      withLatestFrom(this.getMappedButtons()),
-      distinctUntilChanged(
-        ([prevDirection, prevButtons], [direction, buttons]) => {
-          console.log({ prevDirection, prevButtons, direction, buttons });
-          return (
-            prevDirection === direction &&
-            JSON.stringify(prevButtons) === JSON.stringify(buttons)
-          );
-        }
-      ),
+  getInputHistoryWithHold() {
+    return this.getButtonsPerFrame().pipe(
+      startWith({
+        buttons: 0,
+        frame: 0,
+        cardinalDirection: 0,
+      }),
+      distinctUntilKeyChanged('buttons'),
+      pairwise(),
+      map(([prev, next]) => ({ ...prev, hold: next.frame - prev.frame })),
+      tap((frame) => console.warn('changed frame', { frame })),
       scan(
-        (acc: Frame[], [direction, buttons]) =>
-          acc.length > 50
-            ? [{ direction, buttons }]
-            : [...acc, { direction, buttons }],
+        (acc: Frame[], frame) => (acc.length > 50 ? [frame] : [...acc, frame]),
         []
       )
     );

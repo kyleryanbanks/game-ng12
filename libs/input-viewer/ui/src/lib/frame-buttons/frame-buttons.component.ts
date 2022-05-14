@@ -1,15 +1,15 @@
 import { Component, Input } from '@angular/core';
-import { Buttons } from '@game-ng12/game-loop';
+import { MVCIMap } from '@game-ng12/game-loop';
 
 @Component({
   selector: 'ft-frame-buttons',
   template: `
-    <img *ngIf="buttons?.LP" src="assets/input-viewer/LightPunch.png" />
-    <img *ngIf="buttons?.HP" src="assets/input-viewer/HeavyPunch.png" />
-    <img *ngIf="buttons?.LK" src="assets/input-viewer/LightKick.png" />
-    <img *ngIf="buttons?.HK" src="assets/input-viewer/HeavyKick.png" />
-    <img *ngIf="buttons?.TAG" src="assets/input-viewer/Tag.png" />
-    <img *ngIf="buttons?.STONE" src="assets/input-viewer/Surge.png" />
+    <img *ngIf="checkButton(map.LP)" src="assets/input-viewer/LightPunch.png" />
+    <img *ngIf="checkButton(map.HP)" src="assets/input-viewer/HeavyPunch.png" />
+    <img *ngIf="checkButton(map.LK)" src="assets/input-viewer/LightKick.png" />
+    <img *ngIf="checkButton(map.HK)" src="assets/input-viewer/HeavyKick.png" />
+    <img *ngIf="checkButton(map.TAG)" src="assets/input-viewer/Tag.png" />
+    <img *ngIf="checkButton(map.STONE)" src="assets/input-viewer/Surge.png" />
   `,
 
   styles: [
@@ -22,5 +22,10 @@ import { Buttons } from '@game-ng12/game-loop';
   ],
 })
 export class FrameButtonsComponent {
-  @Input() buttons?: Buttons | null;
+  map = MVCIMap;
+  @Input() buttons = 0;
+
+  checkButton(mappingShift: number) {
+    return this.buttons & (1 << mappingShift);
+  }
 }

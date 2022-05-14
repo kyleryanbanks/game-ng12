@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'ft-frame-direction',
   template: `
     <img
-      *ngIf="direction && direction !== null"
+      *ngIf="direction"
       src="assets/input-viewer/Arrow.png"
       [style.transform]="'rotate(' + direction * 45 + 'deg)'"
     />
@@ -20,5 +20,5 @@ import { Component, Input } from '@angular/core';
   ],
 })
 export class FrameDirectionComponent {
-  @Input() direction?: number | null;
+  @Input() direction = 0;
 }
