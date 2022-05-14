@@ -7,16 +7,13 @@ import {
   Observable,
   Observer,
   of,
-  pipe,
-  zip,
 } from 'rxjs';
 import {
-  distinctUntilChanged,
+  debounceTime,
   distinctUntilKeyChanged,
   expand,
   filter,
   map,
-  mapTo,
   pairwise,
   scan,
   share,
@@ -24,45 +21,8 @@ import {
   switchMap,
   takeUntil,
   tap,
-  withLatestFrom,
 } from 'rxjs/operators';
-import { Frame, GamepadButtons, IFrameData } from './game-loop.models';
-
-export const deriveDirectionFromButtons = pipe(
-  map((input: { frame: number; buttons: number }) => {
-    const UP = input.buttons & (1 << 12);
-    const DOWN = input.buttons & (1 << 13);
-    const LEFT = input.buttons & (1 << 14);
-    const RIGHT = input.buttons & (1 << 15);
-
-    let cardinalDirection: number;
-
-    if (UP && !RIGHT && !LEFT) {
-      cardinalDirection = 0;
-    } else if (UP && RIGHT) {
-      cardinalDirection = 1;
-    } else if (RIGHT && !UP && !DOWN) {
-      cardinalDirection = 2;
-    } else if (DOWN && RIGHT) {
-      cardinalDirection = 3;
-    } else if (DOWN && !RIGHT && !LEFT) {
-      cardinalDirection = 4;
-    } else if (DOWN && LEFT) {
-      cardinalDirection = 5;
-    } else if (LEFT && !UP && !DOWN) {
-      cardinalDirection = 6;
-    } else if (UP && LEFT) {
-      cardinalDirection = 7;
-    } else {
-      cardinalDirection = 8;
-    }
-
-    return {
-      ...input,
-      cardinalDirection,
-    };
-  })
-);
+import { Frame, IFrameData } from './game-loop.models';
 
 @Injectable({
   providedIn: 'root',
@@ -79,6 +39,10 @@ export class GameLoopService {
 
   get msDelay() {
     return this._msDelay.getValue();
+  }
+
+  msDelayChanges() {
+    return this._msDelay.asObservable().pipe(debounceTime(200));
   }
 
   calculateStep: (prevFrame?: IFrameData) => Observable<IFrameData> = (
@@ -118,8 +82,7 @@ export class GameLoopService {
   }
 
   getButtonsPerFrame() {
-    return this.connected$.pipe(
-      withLatestFrom(this._msDelay.asObservable()),
+    return combineLatest([this.connected$, this.msDelayChanges()]).pipe(
       map(([event, delay]) => ({
         index: event.gamepad.index,
         delay,
