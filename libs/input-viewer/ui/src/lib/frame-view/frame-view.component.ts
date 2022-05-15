@@ -34,8 +34,6 @@ import { Observable, Subscription } from 'rxjs';
     <button (click)="onReset()">Reset</button>
     <button (click)="onStop()">Stop</button>
 
-    <pre>{{ recordingsState | async | json }}</pre>
-
     <div *ngIf="this.frame$ | async as frame">
       <ft-frame-direction
         [direction]="frame.cardinalDirection"
@@ -52,6 +50,8 @@ import { Observable, Subscription } from 'rxjs';
         <strong>{{ frame.hold }}</strong>
       </div>
     </section>
+
+    <pre>{{ recordingsState | async | json }}</pre>
   `,
   styles: [
     `
@@ -99,6 +99,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
+    this.frames = [];
     this.recorder?.unsubscribe();
     this.recorder = this.gameLoop
       .startRecordingOnNextInput()
