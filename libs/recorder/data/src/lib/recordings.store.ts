@@ -28,12 +28,16 @@ export class RecordingsStore extends ComponentStore<State> {
     super(initialState);
   }
 
-  Recording = (id: number) =>
+  Recording = (id: string) =>
     this.select(this.select(selectEntities), (entities) => entities[id]);
 
   getRecordings(): Observable<Recording[]> {
     return this.select(selectAll);
   }
+
+  getFramesForSelectedRecording = (id: string) => {
+    return this.get().entities[id]?.frames;
+  };
 
   getSelectedRecording() {
     return this.select((state) =>
