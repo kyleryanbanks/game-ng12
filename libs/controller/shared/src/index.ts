@@ -1,1 +1,1 @@
-export * from './lib/controller-shared.module';
+export * from './lib/controller.model';

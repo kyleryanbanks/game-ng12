@@ -5,7 +5,11 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { DS4_BUTTONS, DS4_DPAD_DIRECTIONS, Term } from '@game-ng12/controller';
+import {
+  DS4_BUTTONS,
+  DS4_DPAD_DIRECTIONS,
+  Term,
+} from '@game-ng12/controller/shared';
 
 @Component({
   selector: 'fam-form-controller',

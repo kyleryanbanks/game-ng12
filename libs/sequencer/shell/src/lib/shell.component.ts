@@ -5,7 +5,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ControllerService, Term } from '@game-ng12/controller/data';
+import { Term } from '@game-ng12/controller/shared';
+import { ControllerService } from '@game-ng12/controller/data';
 import { RecordingsStore } from '@game-ng12/recorder/data';
 import { from, of, Subscription } from 'rxjs';
 import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
