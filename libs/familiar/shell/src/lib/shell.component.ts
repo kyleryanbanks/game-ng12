@@ -13,6 +13,12 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         flex-direction: column;
         align-items: center;
       }
+
+      a {
+        color: white;
+        font-size: 20px;
+        margin-bottom: 1rem;
+      }
     `,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
