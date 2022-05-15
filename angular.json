@@ -26,6 +26,31 @@
         }
       }
     },
+    "controller-shared": {
+      "projectType": "library",
+      "root": "libs/controller/shared",
+      "sourceRoot": "libs/controller/shared/src",
+      "prefix": "game-ng12",
+      "architect": {
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/controller/shared"],
+          "options": {
+            "jestConfig": "libs/controller/shared/jest.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "libs/controller/shared/src/**/*.ts",
+              "libs/controller/shared/src/**/*.html"
+            ]
+          }
+        }
+      }
+    },
     "familiar": {
       "projectType": "application",
       "root": "apps/familiar",

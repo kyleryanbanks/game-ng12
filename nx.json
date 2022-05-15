@@ -30,6 +30,9 @@
     "controller-data": {
       "tags": ["scope:familiar", "type:data"]
     },
+    "controller-shared": {
+      "tags": ["scope:[roost", "familiar]", "type:[shared]"]
+    },
     "familiar": {
       "tags": []
     },
