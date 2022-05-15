@@ -1,17 +1,17 @@
 {
   "version": 1,
   "projects": {
-    "controller": {
+    "controller-data": {
       "projectType": "library",
-      "root": "libs/controller",
-      "sourceRoot": "libs/controller/src",
+      "root": "libs/controller/data",
+      "sourceRoot": "libs/controller/data/src",
       "prefix": "game-ng12",
       "architect": {
         "test": {
           "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/controller"],
+          "outputs": ["coverage/libs/controller/data"],
           "options": {
-            "jestConfig": "libs/controller/jest.config.js",
+            "jestConfig": "libs/controller/data/jest.config.js",
             "passWithNoTests": true
           }
         },
@@ -19,8 +19,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "libs/controller/src/**/*.ts",
-              "libs/controller/src/**/*.html"
+              "libs/controller/data/src/**/*.ts",
+              "libs/controller/data/src/**/*.html"
             ]
           }
         }
