@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControllerService, Term } from '@game-ng12/controller';
+import { RecordingsStore } from '@game-ng12/recorder/data';
 import { from, of, Subscription } from 'rxjs';
 import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
 
@@ -15,11 +16,14 @@ import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit, OnDestroy {
-  sequence: Term[] = [];
+  sequence: any[] = [];
   subscriptions = new Subscription();
   connected = false;
 
-  constructor(public controller: ControllerService) {}
+  constructor(
+    public controller: ControllerService,
+    public recordings: RecordingsStore
+  ) {}
 
   ngOnInit() {
     this.subscriptions.add(
@@ -31,6 +35,10 @@ export class ShellComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+  }
+
+  onLoad(id: string) {
+    this.sequence = this.recordings.getFramesForSelectedRecording(id) || [];
   }
 
   onClear() {

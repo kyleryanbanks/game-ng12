@@ -11,16 +11,35 @@
   <button (click)="onClear()">Clear</button>
 </div>
 
-<div
-  class="drag-list"
-  cdkScrollable
-  cdkDropList
-  [cdkDropListData]="sequence"
-  (cdkDropListDropped)="onReorder($event)"
->
-  <div class="drag-item" *ngFor="let term of sequence" cdkDrag>
-    Input: {{ term.input }} for {{ term.hold }} frame/s
+<section>
+  <div
+    class="drag-list"
+    cdkScrollable
+    cdkDropList
+    [cdkDropListData]="sequence"
+    (cdkDropListDropped)="onReorder($event)"
+  >
+    <div
+      class="drag-item"
+      *ngFor="let recording of recordings.getRecordings() | async"
+      cdkDrag
+      (click)="onLoad(recording.id)"
+    >
+      {{ recording.id }}
+    </div>
   </div>
-</div>
+
+  <div
+    class="drag-list"
+    cdkScrollable
+    cdkDropList
+    [cdkDropListData]="sequence"
+    (cdkDropListDropped)="onReorder($event)"
+  >
+    <div class="drag-item" *ngFor="let term of sequence" cdkDrag>
+      Input: {{ term.input }} for {{ term.hold }} frame/s
+    </div>
+  </div>
+</section>
 
 <fam-form-controller (frame)="onFrame($event)"></fam-form-controller>
