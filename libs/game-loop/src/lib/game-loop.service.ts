@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
-  combineLatest,
   fromEvent,
   interval,
   Observable,
   Observer,
   of,
+  Subject,
 } from 'rxjs';
 import {
   debounceTime,
@@ -32,17 +32,18 @@ export class GameLoopService {
   disconnected$ = fromEvent<GamepadEvent>(window, 'gamepaddisconnected');
 
   _msDelay = new BehaviorSubject<number>(16.6);
-
   set msDelay(msDelay: number) {
     this._msDelay.next(msDelay);
   }
-
   get msDelay() {
     return this._msDelay.getValue();
   }
+  msDelay$ = this._msDelay.asObservable().pipe(debounceTime(200));
 
-  msDelayChanges() {
-    return this._msDelay.asObservable().pipe(debounceTime(200));
+  _stop = new Subject<void>();
+  stop() {
+    this._stop.next();
+    this._stop.complete();
   }
 
   calculateStep: (prevFrame?: IFrameData) => Observable<IFrameData> = (
@@ -81,13 +82,9 @@ export class GameLoopService {
     );
   }
 
-  getButtonsPerFrame() {
-    return combineLatest([this.connected$, this.msDelayChanges()]).pipe(
-      map(([event, delay]) => ({
-        index: event.gamepad.index,
-        delay,
-      })),
-      switchMap(({ index, delay }) => {
+  getButtonsPerFrame(index: number = 0) {
+    return this.msDelay$.pipe(
+      switchMap((delay) => {
         return interval(delay).pipe(
           map((frame: number) => {
             const pad = navigator.getGamepads()[index];
@@ -95,15 +92,6 @@ export class GameLoopService {
             if (pad) {
               const buttons = pad.buttons.reduce<number>(
                 (bitfield: number, button, index: number) => {
-                  // console.log({
-                  //   after: (bitfield |= button.value << (index)),
-                  //   pad,
-                  //   frame,
-                  //   pressed: button.pressed,
-                  //   value: button.value,
-                  //   index,
-                  //   bitfield,
-                  // });
                   return (bitfield |= button.value << index);
                 },
                 0
@@ -124,9 +112,7 @@ export class GameLoopService {
                 now: performance.now(),
               };
             }
-          }),
-          tap((frame) => console.warn('active frame', { frame })),
-          takeUntil(this.disconnected$)
+          })
         );
       })
     );
@@ -159,7 +145,9 @@ export class GameLoopService {
     }
   };
 
-  getInputHistoryWithHold() {
+  startRecordingOnNextInput() {
+    this._stop = new Subject<void>();
+
     return this.getButtonsPerFrame().pipe(
       startWith({
         buttons: 0,
@@ -169,11 +157,8 @@ export class GameLoopService {
       distinctUntilKeyChanged('buttons'),
       pairwise(),
       map(([prev, next]) => ({ ...prev, hold: next.frame - prev.frame })),
-      tap((frame) => console.warn('changed frame', { frame })),
-      scan(
-        (acc: Frame[], frame) => (acc.length > 50 ? [frame] : [...acc, frame]),
-        []
-      )
+      scan((acc: Frame[], frame) => [...acc, frame], []),
+      takeUntil(this._stop)
     );
   }
 }

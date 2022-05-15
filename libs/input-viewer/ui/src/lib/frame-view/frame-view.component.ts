@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Frame, GameLoopService } from '@game-ng12/game-loop';
 import { Observable, Subscription } from 'rxjs';
@@ -25,6 +25,9 @@ import { Observable, Subscription } from 'rxjs';
       />
     </label>
 
+    <button (click)="onReset()">Reset</button>
+    <button (click)="onStop()">Stop</button>
+
     <div *ngIf="this.frame$ | async as frame">
       <ft-frame-direction
         [direction]="frame.cardinalDirection"
@@ -33,7 +36,7 @@ import { Observable, Subscription } from 'rxjs';
     </div>
 
     <section>
-      <div *ngFor="let frame of frames$ | async">
+      <div *ngFor="let frame of recording$ | async">
         <ft-frame-direction
           [direction]="frame.cardinalDirection"
         ></ft-frame-direction>
@@ -56,16 +59,17 @@ import { Observable, Subscription } from 'rxjs';
     `,
   ],
 })
-export class FrameViewComponent implements OnInit {
+export class FrameViewComponent implements OnInit, OnDestroy {
   now = performance.now();
   frame$: Observable<Frame>;
-  frames$: Observable<Frame[]>;
+  recording$: Observable<Frame[]>;
   delay = new FormControl(16);
   subscription = new Subscription();
+  frames: Frame[] = [];
 
   constructor(private gameLoop: GameLoopService) {
     this.frame$ = this.gameLoop.getButtonsPerFrame();
-    this.frames$ = this.gameLoop.getInputHistoryWithHold();
+    this.recording$ = this.gameLoop.startRecordingOnNextInput();
   }
 
   ngOnInit() {
@@ -78,5 +82,13 @@ export class FrameViewComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+  }
+
+  onReset() {
+    this.recording$ = this.gameLoop.startRecordingOnNextInput();
+  }
+
+  onStop() {
+    this.gameLoop.stop();
   }
 }
