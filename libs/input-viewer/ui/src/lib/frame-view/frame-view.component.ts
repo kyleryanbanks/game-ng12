@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Frame, GameLoopService } from '@game-ng12/game-loop';
+import { RecordingsStore, State } from '@game-ng12/recorder/data';
 import { Observable, Subscription } from 'rxjs';
 
 @Component({
@@ -25,8 +26,15 @@ import { Observable, Subscription } from 'rxjs';
       />
     </label>
 
+    <label for="name"
+      >Name:
+      <input type="text" [formControl]="name" />
+    </label>
+    <button (click)="onSave()">Save</button>
     <button (click)="onReset()">Reset</button>
     <button (click)="onStop()">Stop</button>
+
+    <pre>{{ recordingsState | async | json }}</pre>
 
     <div *ngIf="this.frame$ | async as frame">
       <ft-frame-direction
@@ -36,7 +44,7 @@ import { Observable, Subscription } from 'rxjs';
     </div>
 
     <section>
-      <div *ngFor="let frame of recording$ | async">
+      <div *ngFor="let frame of frames">
         <ft-frame-direction
           [direction]="frame.cardinalDirection"
         ></ft-frame-direction>
@@ -62,14 +70,19 @@ import { Observable, Subscription } from 'rxjs';
 export class FrameViewComponent implements OnInit, OnDestroy {
   now = performance.now();
   frame$: Observable<Frame>;
-  recording$: Observable<Frame[]>;
   delay = new FormControl(16);
+  name = new FormControl('');
   subscription = new Subscription();
+  recorder = new Subscription();
   frames: Frame[] = [];
+  recordingsState: Observable<State>;
 
-  constructor(private gameLoop: GameLoopService) {
+  constructor(
+    private gameLoop: GameLoopService,
+    public recordings: RecordingsStore
+  ) {
     this.frame$ = this.gameLoop.getButtonsPerFrame();
-    this.recording$ = this.gameLoop.startRecordingOnNextInput();
+    this.recordingsState = this.recordings.select((state) => state);
   }
 
   ngOnInit() {
@@ -78,6 +91,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
         this.gameLoop.msDelay = delay;
       })
     );
+    this.onReset();
   }
 
   ngOnDestroy() {
@@ -85,10 +99,22 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    this.recording$ = this.gameLoop.startRecordingOnNextInput();
+    this.recorder?.unsubscribe();
+    this.recorder = this.gameLoop
+      .startRecordingOnNextInput()
+      .subscribe((frames) => {
+        this.frames = frames;
+      });
   }
 
   onStop() {
-    this.gameLoop.stop();
+    this.recorder?.unsubscribe();
+  }
+
+  onSave() {
+    this.recordings.upsertRecording({
+      frames: this.frames,
+      id: this.name.value,
+    });
   }
 }

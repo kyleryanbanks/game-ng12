@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 
 export interface Recording {
   id: string;
-  name: string;
   frames: Frame[];
 }
 
