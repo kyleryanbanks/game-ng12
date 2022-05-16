@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import {
   DS4Controller,
+  DS4_BUTTONS,
   DS4_DPAD_DIRECTIONS,
   DS4_SPECIAL_BUTTONS,
-  DS4_BUTTONS,
 } from '@game-ng12/controller/shared';
+import { BehaviorSubject } from 'rxjs';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ViGEmClient = (window as any).require('vigemclient');

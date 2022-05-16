@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { XUSB_BUTTON } from '@game-ng12/controller/shared';
 import {
   BehaviorSubject,
   fromEvent,
@@ -22,7 +23,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { Frame, IFrameData } from './game-loop.models';
+import { Frame, GAMEPAD_TO_XUSB, IFrameData } from './game-loop.models';
 
 @Injectable({
   providedIn: 'root',
@@ -90,10 +91,10 @@ export class GameLoopService {
             const pad = navigator.getGamepads()[index];
 
             if (pad) {
+              console.log({ gamepadButtons: pad.buttons });
               const buttons = pad.buttons.reduce<number>(
-                (bitfield: number, button, index: number) => {
-                  return (bitfield |= button.value << index);
-                },
+                (bitfield: number, button, index: number) =>
+                  button.value ? bitfield | GAMEPAD_TO_XUSB[index] : bitfield,
                 0
               );
               const cardinalDirection =
@@ -119,10 +120,10 @@ export class GameLoopService {
   }
 
   deriveCardinalDirectionFromButtons = (buttons: number) => {
-    const UP = buttons & (1 << 12);
-    const DOWN = buttons & (1 << 13);
-    const LEFT = buttons & (1 << 14);
-    const RIGHT = buttons & (1 << 15);
+    const UP = buttons & XUSB_BUTTON.DPAD_UP;
+    const DOWN = buttons & XUSB_BUTTON.DPAD_DOWN;
+    const LEFT = buttons & XUSB_BUTTON.DPAD_LEFT;
+    const RIGHT = buttons & XUSB_BUTTON.DPAD_RIGHT;
 
     if (UP && !RIGHT && !LEFT) {
       return 8;

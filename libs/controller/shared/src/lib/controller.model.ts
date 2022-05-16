@@ -1,6 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+export enum XUSB_BUTTON {
+  DPAD_UP = 1 << 1,
+  DPAD_DOWN = 1 << 2,
+  DPAD_LEFT = 1 << 3,
+  DPAD_RIGHT = 1 << 4,
+  START = 1 << 5,
+  BACK = 1 << 6,
+  LEFT_THUMB = 1 << 7,
+  RIGHT_THUMB = 1 << 8,
+  LEFT_SHOULDER = 1 << 9,
+  RIGHT_SHOULDER = 1 << 10,
+  GUIDE = 1 << 11,
+  A = 1 << 12,
+  B = 1 << 13,
+  X = 1 << 14,
+  Y = 1 << 15,
+}
+
 export enum DS4_BUTTONS {
-  THUMB_RIGHT = 1 << 15,
+  HUMB_RIGHT = 1 << 15,
   THUMB_LEFT = 1 << 14,
   OPTIONS = 1 << 13,
   SHARE = 1 << 12,
