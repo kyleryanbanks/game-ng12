@@ -25,7 +25,7 @@ export class FrameButtonsComponent {
   map = MVCIMap;
   @Input() buttons = 0;
 
-  checkButton(mappingShift: number) {
-    return this.buttons & (1 << mappingShift);
+  checkButton(address: number) {
+    return this.buttons & address;
   }
 }
