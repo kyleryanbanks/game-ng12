@@ -16,7 +16,6 @@
     class="drag-list"
     cdkScrollable
     cdkDropList
-    [cdkDropListData]="sequence"
     (cdkDropListDropped)="onReorder($event)"
   >
     <div
@@ -33,11 +32,11 @@
     class="drag-list"
     cdkScrollable
     cdkDropList
-    [cdkDropListData]="sequence"
+    [cdkDropListData]="frames"
     (cdkDropListDropped)="onReorder($event)"
   >
-    <div class="drag-item" *ngFor="let term of sequence" cdkDrag>
-      Input: {{ term.buttons }} for {{ term.hold }} frame/s
+    <div class="drag-item" *ngFor="let frame of frames" cdkDrag>
+      Input: {{ frame.buttons }} for {{ frame.hold }} frame/s
     </div>
   </div>
 </section>

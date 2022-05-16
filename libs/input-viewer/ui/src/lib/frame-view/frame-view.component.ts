@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Frame, GameLoopService } from '@game-ng12/game-loop';
+import { Frame, GameLoopService, HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
 import { Observable, Subscription } from 'rxjs';
 
@@ -35,17 +35,13 @@ import { Observable, Subscription } from 'rxjs';
     <button (click)="onStop()">Stop</button>
 
     <div *ngIf="this.frame$ | async as frame">
-      <ft-frame-direction
-        [direction]="frame.cardinalDirection"
-      ></ft-frame-direction>
+      <ft-frame-direction [buttons]="frame.buttons"></ft-frame-direction>
       <ft-frame-buttons [buttons]="frame.buttons"></ft-frame-buttons>
     </div>
 
     <section>
       <div *ngFor="let frame of frames">
-        <ft-frame-direction
-          [direction]="frame.cardinalDirection"
-        ></ft-frame-direction>
+        <ft-frame-direction [buttons]="frame.buttons"></ft-frame-direction>
         <ft-frame-buttons [buttons]="frame.buttons"></ft-frame-buttons>
         <strong>{{ frame.hold }}</strong>
       </div>
@@ -74,7 +70,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   name = new FormControl('');
   subscription = new Subscription();
   recorder = new Subscription();
-  frames: Frame[] = [];
+  frames: HeldFrame[] = [];
   recordingsState: Observable<State>;
 
   constructor(

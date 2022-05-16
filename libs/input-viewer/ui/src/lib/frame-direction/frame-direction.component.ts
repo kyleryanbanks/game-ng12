@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { deriveCardinalDirectionFromButtons } from '@game-ng12/controller/shared';
 
 @Component({
   selector: 'ft-frame-direction',
@@ -20,5 +21,9 @@ import { Component, Input } from '@angular/core';
   ],
 })
 export class FrameDirectionComponent {
-  @Input() direction = 0;
+  direction = 0;
+
+  @Input() set buttons(buttons: number) {
+    this.direction = deriveCardinalDirectionFromButtons(buttons);
+  }
 }

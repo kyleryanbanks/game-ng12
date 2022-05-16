@@ -5,8 +5,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Term } from '@game-ng12/controller/shared';
 import { ControllerService } from '@game-ng12/controller/data';
+import { HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore } from '@game-ng12/recorder/data';
 import { from, of, Subscription } from 'rxjs';
 import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit, OnDestroy {
-  sequence: any[] = [];
+  frames: HeldFrame[] = [];
   subscriptions = new Subscription();
   connected = false;
 
@@ -39,18 +39,18 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   onLoad(id: string) {
-    this.sequence = this.recordings.getFramesForSelectedRecording(id) || [];
+    this.frames = this.recordings.getFramesForSelectedRecording(id) || [];
   }
 
   onClear() {
-    this.sequence = [];
+    this.frames = [];
   }
 
-  onFrame(term: Term) {
-    this.sequence.push(term);
+  onFrame(frame: HeldFrame) {
+    this.frames.push(frame);
   }
 
-  onReorder(event: CdkDragDrop<Term[]>) {
+  onReorder(event: CdkDragDrop<HeldFrame[]>) {
     moveItemInArray(
       event.container.data,
       event.previousIndex,
@@ -63,12 +63,12 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   onPlay() {
-    from(this.sequence)
+    from(this.frames)
       .pipe(
-        concatMap((input) =>
-          of(input).pipe(
-            tap((frame) => this.controller.setButtons(frame.input)),
-            delay(18 * input.hold)
+        concatMap((frame) =>
+          of(frame).pipe(
+            tap((frame) => this.controller.setButtons(frame.buttons)),
+            delay(18 * frame.hold)
           )
         ),
         tap(console.log),

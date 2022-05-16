@@ -72,8 +72,10 @@ export interface Buttons {
 }
 
 export interface Frame {
-  frame: number;
-  hold?: number;
-  cardinalDirection: number; // cardinal directions. 0 = up incrementing clockwise.
+  frame?: number;
   buttons: number; // Bitfield of all gamepad APIs buttons pressed state
+}
+
+export interface HeldFrame extends Frame {
+  hold: number;
 }

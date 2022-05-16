@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Frame } from '@game-ng12/game-loop';
+import { HeldFrame } from '@game-ng12/game-loop';
 import { ComponentStore } from '@ngrx/component-store';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { Observable } from 'rxjs';
 
 export interface Recording {
   id: string;
-  frames: Frame[];
+  frames: HeldFrame[];
 }
 
 export interface State extends EntityState<Recording> {

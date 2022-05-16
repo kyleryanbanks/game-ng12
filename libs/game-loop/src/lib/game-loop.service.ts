@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { XUSB_BUTTON } from '@game-ng12/controller/shared';
 import {
   BehaviorSubject,
   fromEvent,
@@ -23,7 +22,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { Frame, GAMEPAD_TO_XUSB, IFrameData } from './game-loop.models';
+import { GAMEPAD_TO_XUSB, HeldFrame, IFrameData } from './game-loop.models';
 
 @Injectable({
   providedIn: 'root',
@@ -97,19 +96,15 @@ export class GameLoopService {
                   button.value ? bitfield | GAMEPAD_TO_XUSB[index] : bitfield,
                 0
               );
-              const cardinalDirection =
-                this.deriveCardinalDirectionFromButtons(buttons);
               return {
                 frame,
                 buttons,
-                cardinalDirection,
                 now: performance.now(),
               };
             } else {
               return {
                 frame,
                 buttons: 0,
-                cardinalDirection: 0,
                 now: performance.now(),
               };
             }
@@ -118,33 +113,6 @@ export class GameLoopService {
       })
     );
   }
-
-  deriveCardinalDirectionFromButtons = (buttons: number) => {
-    const UP = buttons & XUSB_BUTTON.DPAD_UP;
-    const DOWN = buttons & XUSB_BUTTON.DPAD_DOWN;
-    const LEFT = buttons & XUSB_BUTTON.DPAD_LEFT;
-    const RIGHT = buttons & XUSB_BUTTON.DPAD_RIGHT;
-
-    if (UP && !RIGHT && !LEFT) {
-      return 8;
-    } else if (UP && RIGHT) {
-      return 1;
-    } else if (RIGHT && !UP && !DOWN) {
-      return 2;
-    } else if (DOWN && RIGHT) {
-      return 3;
-    } else if (DOWN && !RIGHT && !LEFT) {
-      return 4;
-    } else if (DOWN && LEFT) {
-      return 5;
-    } else if (LEFT && !UP && !DOWN) {
-      return 6;
-    } else if (UP && LEFT) {
-      return 7;
-    } else {
-      return 0;
-    }
-  };
 
   startRecordingOnNextInput() {
     this._stop = new Subject<void>();
@@ -158,7 +126,7 @@ export class GameLoopService {
       distinctUntilKeyChanged('buttons'),
       pairwise(),
       map(([prev, next]) => ({ ...prev, hold: next.frame - prev.frame })),
-      scan((acc: Frame[], frame) => [...acc, frame], []),
+      scan((acc: HeldFrame[], frame) => [...acc, frame], []),
       takeUntil(this._stop)
     );
   }

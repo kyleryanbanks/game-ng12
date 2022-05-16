@@ -17,6 +17,18 @@ export enum XUSB_BUTTON {
   Y = 1 << 15,
 }
 
+export enum XUSB_DPAD_DIRECTIONS {
+  DPAD_NORTH = 1,
+  DPAD_NORTHWEST = 5,
+  DPAD_WEST = 4,
+  DPAD_SOUTHWEST = 6,
+  DPAD_SOUTH = 2,
+  DPAD_SOUTHEAST = 10,
+  DPAD_EAST = 8,
+  DPAD_NORTHEAST = 9,
+  DPAD_NONE = 0,
+}
+
 export enum DS4_BUTTONS {
   HUMB_RIGHT = 1 << 15,
   THUMB_LEFT = 1 << 14,
@@ -135,9 +147,4 @@ export interface ViGEmTarget<B extends string, A extends string> {
 
 export interface DS4Controller extends ViGEmTarget<TDS4Buttons, TDS4Axis> {
   _report: DS4InputReport;
-}
-
-export interface Term {
-  input: number;
-  hold: number;
 }

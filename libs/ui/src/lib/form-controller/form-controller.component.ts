@@ -6,10 +6,10 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
-  DS4_BUTTONS,
-  DS4_DPAD_DIRECTIONS,
-  Term,
+  XUSB_BUTTON,
+  XUSB_DPAD_DIRECTIONS,
 } from '@game-ng12/controller/shared';
+import { HeldFrame } from '@game-ng12/game-loop';
 
 @Component({
   selector: 'fam-form-controller',
@@ -18,12 +18,11 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormControllerComponent {
-  _DIR = DS4_DPAD_DIRECTIONS;
-  _BTN = DS4_BUTTONS;
+  _DIR = XUSB_DPAD_DIRECTIONS;
+  _BTN = XUSB_BUTTON;
   controller: FormGroup;
-  lastInput = {};
 
-  @Output() frame = new EventEmitter<Term>();
+  @Output() frame = new EventEmitter<HeldFrame>();
 
   constructor(fb: FormBuilder) {
     this.controller = fb.group({
@@ -48,28 +47,27 @@ export class FormControllerComponent {
 
   onSubmit() {
     console.log(this.controller);
-    const buttons = this.controller.controls.buttons.value as Record<
-      keyof typeof DS4_BUTTONS,
+    const buttonsObject = this.controller.controls.buttons.value as Record<
+      keyof typeof XUSB_BUTTON,
       boolean
     >;
 
     const buttonInputs = (
-      Object.entries(buttons) as unknown as Array<[DS4_BUTTONS, boolean]>
+      Object.entries(buttonsObject) as unknown as Array<[XUSB_BUTTON, boolean]>
     ).reduce<number>((wButtons, [name, value]) => {
       if (value) {
-        return wButtons | (DS4_BUTTONS[name] as any);
+        return wButtons | (XUSB_BUTTON[name] as any);
       } else {
-        return wButtons & ~DS4_BUTTONS[name];
+        return wButtons & ~XUSB_BUTTON[name];
       }
     }, 0);
 
     const direction = this.controller.controls.direction.value;
-    const input = buttonInputs | direction;
-    this.lastInput = input;
+    const buttons = buttonInputs | direction;
 
     const hold = this.controller.controls.hold.value;
 
-    this.frame.emit({ input, hold });
+    this.frame.emit({ buttons, hold });
 
     this.controller.reset({
       hold: 1,
