@@ -54,10 +54,6 @@ export class ControllerService {
     return this.report.reportObj.wButtons & 0xf;
   }
 
-  get directionName() {
-    return DS4_DPAD_DIRECTIONS[this.direction];
-  }
-
   setButtons(wButtons: number) {
     this.controller._report.reportObj.wButtons = wButtons;
     this.controller.update();

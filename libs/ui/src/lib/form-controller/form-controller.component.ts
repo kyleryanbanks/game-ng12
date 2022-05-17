@@ -27,7 +27,7 @@ export class FormControllerComponent {
   constructor(fb: FormBuilder) {
     this.controller = fb.group({
       hold: [1],
-      direction: [8],
+      direction: [0],
       buttons: fb.group({
         THUMB_RIGHT: [false],
         THUMB_LEFT: [false],
@@ -71,7 +71,7 @@ export class FormControllerComponent {
 
     this.controller.reset({
       hold: 1,
-      direction: 8,
+      direction: 0,
       buttons: {
         THUMB_RIGHT: false,
         THUMB_LEFT: false,
