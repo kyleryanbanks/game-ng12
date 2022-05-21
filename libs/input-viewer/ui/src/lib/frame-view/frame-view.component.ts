@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Frame, GameLoopService, HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
@@ -72,6 +72,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   recorder = new Subscription();
   frames: HeldFrame[] = [];
   recordingsState: Observable<State>;
+  @Input() controllerId = 0;
 
   constructor(
     private gameLoop: GameLoopService,
@@ -98,7 +99,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
     this.frames = [];
     this.recorder?.unsubscribe();
     this.recorder = this.gameLoop
-      .startRecordingOnNextInput()
+      .startRecordingControllerOnNextInput(this.controllerId)
       .subscribe((frames) => {
         this.frames = frames;
       });

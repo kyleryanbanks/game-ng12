@@ -113,10 +113,10 @@ export class GameLoopService {
     );
   }
 
-  startRecordingOnNextInput() {
+  startRecordingControllerOnNextInput(controllerId: number) {
     this._stop = new Subject<void>();
 
-    return this.getButtonsPerFrame().pipe(
+    return this.getButtonsPerFrame(controllerId).pipe(
       startWith({
         buttons: 0,
         frame: 0,
