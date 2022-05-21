@@ -90,7 +90,6 @@ export class GameLoopService {
             const pad = navigator.getGamepads()[index];
 
             if (pad) {
-              console.log({ gamepadButtons: pad.buttons });
               const buttons = pad.buttons.reduce<number>(
                 (bitfield: number, button, index: number) =>
                   button.value ? bitfield | GAMEPAD_TO_XUSB[index] : bitfield,

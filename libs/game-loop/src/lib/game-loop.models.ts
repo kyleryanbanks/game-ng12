@@ -58,8 +58,8 @@ export enum MVCIMap {
   HK = XUSB_BUTTON.Y,
   LP = XUSB_BUTTON.A,
   HP = XUSB_BUTTON.B,
-  STONE = XUSB_BUTTON.LEFT_SHOULDER,
-  TAG = XUSB_BUTTON.RIGHT_SHOULDER,
+  STONE = 256, // Using XUSB SHOULDER doesn't register as 256/512 in the input viewer?
+  TAG = 512,
 }
 
 export interface Buttons {

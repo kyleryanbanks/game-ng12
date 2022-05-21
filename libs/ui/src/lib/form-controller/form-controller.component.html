@@ -88,74 +88,50 @@
     <fieldset id="buttons" formGroupName="buttons">
       <legend>Buttons</legend>
       <label>
+        <input type="checkbox" name="buttons" formControlName="Y" />Y
+      </label>
+      <label>
+        <input type="checkbox" name="buttons" formControlName="X" />X
+      </label>
+      <label>
+        <input type="checkbox" name="buttons" formControlName="B" />B
+      </label>
+      <label>
+        <input type="checkbox" name="buttons" formControlName="A" />A
+      </label>
+      <label>
         <input
           type="checkbox"
           name="buttons"
-          formControlName="THUMB_RIGHT"
+          formControlName="RIGHT_THUMB"
         />R.Thumb
       </label>
       <label>
         <input
           type="checkbox"
           name="buttons"
-          formControlName="THUMB_LEFT"
+          formControlName="LEFT_THUMB"
         />L.Thumb
       </label>
       <label>
         <input
           type="checkbox"
           name="buttons"
-          formControlName="OPTIONS"
-        />Options
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="SHARE" />Share
-      </label>
-      <label>
-        <input
-          [disabled]="true"
-          type="checkbox"
-          name="buttons"
-          formControlName="TRIGGER_RIGHT"
-        />R.Trigger
-      </label>
-      <label>
-        <input
-          [disabled]="true"
-          type="checkbox"
-          name="buttons"
-          formControlName="TRIGGER_LEFT"
-        />L.Trigger
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="buttons"
-          formControlName="SHOULDER_RIGHT"
+          formControlName="RIGHT_SHOULDER"
         />R.Shoulder
       </label>
       <label>
         <input
           type="checkbox"
           name="buttons"
-          formControlName="SHOULDER_LEFT"
+          formControlName="LEFT_SHOULDER"
         />L.Shoulder
       </label>
       <label>
-        <input
-          type="checkbox"
-          name="buttons"
-          formControlName="TRIANGLE"
-        />Triangle
+        <input type="checkbox" name="buttons" formControlName="START" />Start
       </label>
       <label>
-        <input type="checkbox" name="buttons" formControlName="SQUARE" />Square
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="CIRCLE" />Circle
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="CROSS" />Cross
+        <input type="checkbox" name="buttons" formControlName="BACK" />Back
       </label>
     </fieldset>
   </div>

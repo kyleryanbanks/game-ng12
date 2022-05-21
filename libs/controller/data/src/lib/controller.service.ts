@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
-  DS4Controller,
-  DS4_BUTTONS,
-  DS4_DPAD_DIRECTIONS,
-  DS4_SPECIAL_BUTTONS,
+  X360Controller,
+  XUSB_BUTTON,
+  XUSB_DPAD_DIRECTIONS,
 } from '@game-ng12/controller/shared';
 import { BehaviorSubject } from 'rxjs';
 
@@ -14,14 +13,14 @@ const ViGEmClient = (window as any).require('vigemclient');
 export class ControllerService {
   client; // new ViGEmClient();
   connectionError: Error | null = null; // this.client.connect()
-  controller: DS4Controller; //this.client.createDS4Controller();
+  controller: X360Controller; //this.client.createX360Controller();
 
   _connected = new BehaviorSubject(false);
 
   constructor() {
     this.client = new ViGEmClient();
     this.connectionError = this.client.connect();
-    this.controller = this.client.createDS4Controller();
+    this.controller = this.client.createX360Controller();
   }
 
   connect() {
@@ -63,16 +62,7 @@ export class ControllerService {
     this.controller.resetInputs();
   }
 
-  setSpecial(buttonIndex: DS4_SPECIAL_BUTTONS, value: boolean) {
-    if (value) {
-      this.controller._report.reportObj.bSpecial |= buttonIndex;
-    } else {
-      this.controller._report.reportObj.bSpecial &= ~buttonIndex;
-    }
-    this.controller.update();
-  }
-
-  setButton(buttonIndex: DS4_BUTTONS, value: boolean) {
+  setButton(buttonIndex: XUSB_BUTTON, value: boolean) {
     if (value) {
       this.controller._report.reportObj.wButtons |= buttonIndex;
     } else {
@@ -81,7 +71,7 @@ export class ControllerService {
     this.controller.update();
   }
 
-  setDirection(directionValue: DS4_DPAD_DIRECTIONS) {
+  setDirection(directionValue: XUSB_DPAD_DIRECTIONS) {
     this.controller._report.reportObj.wButtons &= 0xfff0; // reset dpad
     this.controller._report.reportObj.wButtons |= directionValue;
     this.controller.update();

@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export enum XUSB_BUTTON {
-  DPAD_UP = 1 << 1,
-  DPAD_DOWN = 1 << 2,
-  DPAD_LEFT = 1 << 3,
-  DPAD_RIGHT = 1 << 4,
-  START = 1 << 5,
-  BACK = 1 << 6,
-  LEFT_THUMB = 1 << 7,
-  RIGHT_THUMB = 1 << 8,
-  LEFT_SHOULDER = 1 << 9,
-  RIGHT_SHOULDER = 1 << 10,
-  GUIDE = 1 << 11,
+  DPAD_UP = 1 << 0,
+  DPAD_DOWN = 1 << 1,
+  DPAD_LEFT = 1 << 2,
+  DPAD_RIGHT = 1 << 3,
+  START = 1 << 4,
+  BACK = 1 << 5,
+  LEFT_THUMB = 1 << 6,
+  RIGHT_THUMB = 1 << 7,
+  LEFT_SHOULDER = 1 << 8,
+  RIGHT_SHOULDER = 1 << 9,
+  GUIDE = 1 << 10,
   A = 1 << 12,
   B = 1 << 13,
   X = 1 << 14,
@@ -30,7 +30,7 @@ export enum XUSB_DPAD_DIRECTIONS {
 }
 
 export enum DS4_BUTTONS {
-  HUMB_RIGHT = 1 << 15,
+  THUMB_RIGHT = 1 << 15,
   THUMB_LEFT = 1 << 14,
   OPTIONS = 1 << 13,
   SHARE = 1 << 12,
@@ -79,7 +79,7 @@ export enum VIGEM_ERRORS {
   'VIGEM_ERROR_XUSB_USERINDEX_OUT_OF_RANGE' = 0xe0000014,
 }
 
-export interface ReportObject {
+export interface DS4ReportObject {
   wButtons: DS4_BUTTONS | DS4_DPAD_DIRECTIONS;
   bThumbLX: number;
   bThumbLY: number;
@@ -90,8 +90,31 @@ export interface ReportObject {
   bSpecial: DS4_SPECIAL_BUTTONS;
 }
 
+export interface X360ReportObject {
+  wButtons: number;
+  bLeftTrigger: number;
+  bRightTrigger: number;
+  sThumbLX: number;
+  sThumbLY: number;
+  sThumbRX: number;
+  sThumbRY: number;
+}
+
+export interface X360InputReport {
+  reportObj: X360ReportObject;
+  _dpadH: number;
+  _dpadV: number;
+  updateButton: (name: string, value: boolean) => void;
+  updateAxis: (name: string, value: boolean) => void;
+
+  getButtonValue: (name: DS4_BUTTONS) => boolean;
+  getAxisValue: (name: DS4_BUTTONS) => number;
+
+  reset: () => void;
+}
+
 export interface DS4InputReport {
-  reportObj: ReportObject;
+  reportObj: DS4ReportObject;
   _dpadH: number;
   _dpadV: number;
   updateButton: (name: string, value: boolean) => void;
@@ -147,4 +170,23 @@ export interface ViGEmTarget<B extends string, A extends string> {
 
 export interface DS4Controller extends ViGEmTarget<TDS4Buttons, TDS4Axis> {
   _report: DS4InputReport;
+}
+
+type TX360Buttons = keyof Omit<
+  typeof XUSB_BUTTON,
+  'DPAD_UP' | 'DPAD_DOWN' | 'DPAD_LEFT' | 'DPAD_RIGHT'
+>;
+type TX360Axis =
+  | 'leftX'
+  | 'leftY'
+  | 'rightX'
+  | 'rightY'
+  | 'leftTrigger'
+  | 'rightTrigger'
+  | 'dpadHorz'
+  | 'dpadVert';
+
+export interface X360Controller extends ViGEmTarget<TX360Buttons, TX360Axis> {
+  get userIndex(): number;
+  _report: X360InputReport;
 }
