@@ -1,1 +1,6 @@
-<ft-frame-view></ft-frame-view>
+<ng-container *ngFor="let id of order">
+  <ft-frame-view
+    *ngIf="connectedGamepads[id]"
+    [controllerId]="id"
+  ></ft-frame-view>
+</ng-container>
