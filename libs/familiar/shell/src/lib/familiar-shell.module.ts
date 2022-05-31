@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Route, RouterModule } from '@angular/router';
+import { NgxElectronModule } from 'ngx-electron';
 import { ElectronGuard } from './electron.guard';
 import { ShellComponent } from './shell.component';
 
@@ -21,7 +22,7 @@ export const routes: Route[] = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule.forRoot(routes)],
+  imports: [CommonModule, RouterModule.forRoot(routes), NgxElectronModule],
   declarations: [ShellComponent],
   exports: [ShellComponent],
 })
