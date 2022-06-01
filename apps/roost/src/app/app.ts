@@ -59,28 +59,61 @@ export default class App {
   private static initMainWindow() {
     const workAreaSize = screen.getPrimaryDisplay().workAreaSize;
     const width = Math.min(1280, workAreaSize.width || 1280);
-    const height = Math.min(720, workAreaSize.height || 720);
+    const height = Math.min(720, workAreaSize.height || 720); // default to center
+    // Get saved bounds
+    // Check if saved bounds on screen
 
-    // Create the browser window.
-    App.mainWindow = new BrowserWindow({
-      width: width,
-      height: height,
-      show: false,
+    const options = {
+      height,
+      width,
+      title: 'Roost',
       alwaysOnTop: true,
-      // titleBarStyle: 'default',
-      //transparent: true,
-      //frame: false,
-      backgroundColor: '#2c664ca4',
+      backgroundColor: '#00FFFFFF',
+      type: 'toolbar',
+      closable: true,
+      frame: false,
+      show: false,
+      transparent: true,
       webPreferences: {
-        nodeIntegration: true,
         contextIsolation: false,
+        nodeIntegration: true,
         backgroundThrottling: false,
         preload: join(__dirname, 'preload.js'),
       },
-    });
+    };
+
+    // Create the browser window.
+    App.mainWindow = new BrowserWindow(options);
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
-    App.mainWindow.webContents.openDevTools();
+
+    App.mainWindow.setFullScreenable(false);
+
+    // VisibleOnFullscreen removed in https://github.com/electron/electron/pull/21706
+    App.mainWindow.setVisibleOnAllWorkspaces(true, {
+      visibleOnFullScreen: true,
+    });
+
+    // Values include normal, floating, torn-off-menu, modal-panel, main-menu, status, pop-up-menu, screen-saver
+    App.mainWindow.setAlwaysOnTop(true, 'screen-saver');
+
+    // {
+    //   transparent: true,
+    //   maximizable: true,
+    //   focusable: false,
+    //   alwaysOnTop: true,
+    //   frame: false,
+    //   width: 600,
+    //   height: 400,
+    //   show: false,
+    //   backgroundColor: '#2c664ca4',
+    //   webPreferences: {
+    //     nodeIntegration: true,
+    //     contextIsolation: false,
+    //     backgroundThrottling: false,
+    //     preload: join(__dirname, 'preload.js'),
+    //   },
+    // });
 
     // if main window is ready to show, close the splash window and show the main window
     App.mainWindow.once('ready-to-show', () => {

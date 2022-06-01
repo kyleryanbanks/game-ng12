@@ -17,6 +17,11 @@ import { ElectronService } from 'ngx-electron';
         align-items: center;
       }
 
+      h1 {
+        -webkit-app-region: drag;
+        color: white;
+      }
+
       a {
         color: white;
         font-size: 20px;
