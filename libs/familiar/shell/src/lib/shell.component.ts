@@ -5,6 +5,7 @@ import { ElectronService } from 'ngx-electron';
   selector: 'fam-shell',
   template: `<h1>Welcome to Familiar!</h1>
     <button (click)="onClose()">Close</button>
+    <button (click)="onDevTools()">Dev Tools</button>
     <a routerLink="sequencer">Sequencer</a>
     <a routerLink="">Input Viewer</a>
     <router-outlet></router-outlet>`,
@@ -30,5 +31,9 @@ export class ShellComponent {
 
   onClose() {
     this.electron.ipcRenderer.send('quit');
+  }
+
+  onDevTools() {
+    this.electron.ipcRenderer.send('devTools');
   }
 }
