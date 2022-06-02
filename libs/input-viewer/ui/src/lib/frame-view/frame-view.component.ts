@@ -7,6 +7,7 @@ import { Observable, of, Subscription } from 'rxjs';
 @Component({
   selector: 'ft-frame-view',
   template: `
+    <h2>Controller: {{ controllerId }}</h2>
     <input
       [formControl]="delay"
       [value]="delay.value"
@@ -59,6 +60,11 @@ import { Observable, of, Subscription } from 'rxjs';
       section {
         display: flex;
         flex-direction: column-reverse;
+        gap: 0.5rem;
+      }
+
+      h2 {
+        text-align: center;
       }
     `,
   ],
