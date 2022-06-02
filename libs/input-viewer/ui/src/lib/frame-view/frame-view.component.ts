@@ -78,7 +78,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
     private gameLoop: GameLoopService,
     public recordings: RecordingsStore
   ) {
-    this.frame$ = this.gameLoop.getButtonsPerFrame();
+    this.frame$ = this.gameLoop.getButtonsPerFrame(this.controllerId);
     this.recordingsState = this.recordings.select((state) => state);
   }
 
