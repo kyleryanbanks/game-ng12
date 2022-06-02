@@ -6,6 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControllerService } from '@game-ng12/controller/data';
+import { swapBits } from '@game-ng12/controller/shared';
 import { HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore } from '@game-ng12/recorder/data';
 import { from, of, Subscription } from 'rxjs';
@@ -62,8 +63,17 @@ export class ShellComponent implements OnInit, OnDestroy {
     this.controller.setNeutral();
   }
 
-  onPlay() {
-    from(this.frames)
+  onPlay(asP2: boolean) {
+    let frames = this.frames;
+
+    if (asP2) {
+      frames = frames.map((frame) => ({
+        ...frame,
+        buttons: swapBits(frame.buttons, 2, 3),
+      }));
+    }
+
+    from(frames)
       .pipe(
         concatMap((frame) =>
           of(frame).pipe(
