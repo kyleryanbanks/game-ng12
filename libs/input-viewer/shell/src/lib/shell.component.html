@@ -1,6 +1,6 @@
 <ng-container *ngFor="let id of order">
   <ft-frame-view
-    *ngIf="connectedGamepads[id]"
+    *ngIf="(connectedGamepads$ | async)![id]"
     [controllerId]="id"
   ></ft-frame-view>
 </ng-container>

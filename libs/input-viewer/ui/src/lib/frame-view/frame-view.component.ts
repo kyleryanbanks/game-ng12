@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Frame, GameLoopService, HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 
 @Component({
   selector: 'ft-frame-view',
@@ -65,20 +65,19 @@ import { Observable, Subscription } from 'rxjs';
 })
 export class FrameViewComponent implements OnInit, OnDestroy {
   now = performance.now();
-  frame$: Observable<Frame>;
+  frame$: Observable<Frame> = of({ buttons: 0, frame: 0 });
   delay = new FormControl(16);
   name = new FormControl('');
   subscription = new Subscription();
   recorder = new Subscription();
   frames: HeldFrame[] = [];
   recordingsState: Observable<State>;
-  @Input() controllerId = 0;
+  @Input() controllerId!: number;
 
   constructor(
     private gameLoop: GameLoopService,
     public recordings: RecordingsStore
   ) {
-    this.frame$ = this.gameLoop.getButtonsPerFrame(this.controllerId);
     this.recordingsState = this.recordings.select((state) => state);
   }
 
@@ -88,6 +87,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
         this.gameLoop.msDelay = delay;
       })
     );
+    this.frame$ = this.gameLoop.getButtonsPerFrame(this.controllerId);
     this.onReset();
   }
 
