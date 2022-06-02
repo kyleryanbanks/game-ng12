@@ -26,3 +26,11 @@ export const deriveCardinalDirectionFromButtons = (buttons: number) => {
     return 0;
   }
 };
+
+export const swapBits = (n: number, p1: number, p2: number): number => {
+  //left-shift 1 p1 and p2 times
+  //and using XOR
+  n ^= 1 << p1;
+  n ^= 1 << p2;
+  return n;
+};
