@@ -66,21 +66,14 @@ export default class App {
     const options = {
       height,
       width,
-      acceptFirstMouse: true,
       alwaysOnTop: true,
       backgroundColor: '#00FFFFFF',
       closable: true,
       frame: false,
       fullscreenable: false,
-      hasShadow: false,
-      maximizable: false,
-      minimizable: false,
       movable: true,
       resizable: true,
-      show: false,
-      skipTaskbar: false,
       transparent: true,
-      useContentSize: true,
       title: 'Roost',
       webPreferences: {
         contextIsolation: false,
@@ -94,34 +87,6 @@ export default class App {
     App.mainWindow = new BrowserWindow(options);
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
-
-    App.mainWindow.setFullScreenable(false);
-
-    // VisibleOnFullscreen removed in https://github.com/electron/electron/pull/21706
-    App.mainWindow.setVisibleOnAllWorkspaces(true, {
-      visibleOnFullScreen: true,
-    });
-
-    // Values include normal, floating, torn-off-menu, modal-panel, main-menu, status, pop-up-menu, screen-saver
-    App.mainWindow.setAlwaysOnTop(true, 'screen-saver');
-
-    // {
-    //   transparent: true,
-    //   maximizable: true,
-    //   focusable: false,
-    //   alwaysOnTop: true,
-    //   frame: false,
-    //   width: 600,
-    //   height: 400,
-    //   show: false,
-    //   backgroundColor: '#2c664ca4',
-    //   webPreferences: {
-    //     nodeIntegration: true,
-    //     contextIsolation: false,
-    //     backgroundThrottling: false,
-    //     preload: join(__dirname, 'preload.js'),
-    //   },
-    // });
 
     // if main window is ready to show, close the splash window and show the main window
     App.mainWindow.once('ready-to-show', () => {
