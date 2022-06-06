@@ -16,6 +16,8 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
         {{ input.name }}
       </div>
     </ng-container>
+    <div class="trigger" *ngIf="leftTrigger">LT</div>
+    <div class="trigger" *ngIf="rightTrigger">RT</div>
   `,
   styles: [
     `
@@ -34,12 +36,19 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
         height: 2.5rem;
         margin: 0.2rem;
       }
+
+      .trigger {
+        background-color: darkslateblue;
+        border-radius: 50%;
+      }
     `,
   ],
 })
 export class XboxButtonsComponent {
   inputs: Button[] = XUSB_BUTTONS;
   @Input() buttons = 0;
+  @Input() leftTrigger = 0;
+  @Input() rightTrigger = 0;
   @Input() hold?: number;
 
   checkButtonsAndValue(value: number) {

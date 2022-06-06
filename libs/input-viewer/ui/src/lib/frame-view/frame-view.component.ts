@@ -36,13 +36,19 @@ import { Observable, of, Subscription } from 'rxjs';
     <button (click)="onStop()">Stop</button>
 
     <div *ngIf="this.frame$ | async as frame">
-      <ft-xbox-buttons [buttons]="frame.buttons"></ft-xbox-buttons>
+      <ft-xbox-buttons
+        [buttons]="frame.buttons"
+        [leftTrigger]="frame.leftTrigger"
+        [rightTrigger]="frame.rightTrigger"
+      ></ft-xbox-buttons>
     </div>
 
     <section>
       <div *ngFor="let frame of frames">
         <ft-xbox-buttons
           [buttons]="frame.buttons"
+          [leftTrigger]="frame.leftTrigger"
+          [rightTrigger]="frame.rightTrigger"
           [hold]="frame.hold"
         ></ft-xbox-buttons>
       </div>
@@ -71,7 +77,12 @@ import { Observable, of, Subscription } from 'rxjs';
 })
 export class FrameViewComponent implements OnInit, OnDestroy {
   now = performance.now();
-  frame$: Observable<Frame> = of({ buttons: 0, frame: 0 });
+  frame$: Observable<Frame> = of({
+    buttons: 0,
+    frame: 0,
+    leftTrigger: 0,
+    rightTrigger: 0,
+  });
   delay = new FormControl(16);
   name = new FormControl('');
   subscription = new Subscription();
