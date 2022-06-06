@@ -53,8 +53,10 @@ export class ControllerService {
     return this.report.reportObj.wButtons & 0xf;
   }
 
-  setButtons(wButtons: number) {
+  setButtons(wButtons: number, bLeftTrigger: number, bRightTrigger: number) {
     this.controller._report.reportObj.wButtons = wButtons;
+    this.controller._report.reportObj.bLeftTrigger = bLeftTrigger;
+    this.controller._report.reportObj.bRightTrigger = bRightTrigger;
     this.controller.update();
   }
 

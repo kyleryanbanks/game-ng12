@@ -77,7 +77,13 @@ export class ShellComponent implements OnInit, OnDestroy {
       .pipe(
         concatMap((frame) =>
           of(frame).pipe(
-            tap((frame) => this.controller.setButtons(frame.buttons)),
+            tap((frame) =>
+              this.controller.setButtons(
+                frame.buttons,
+                frame.leftTrigger,
+                frame.rightTrigger
+              )
+            ),
             delay(18 * frame.hold)
           )
         ),

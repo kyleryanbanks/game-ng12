@@ -71,11 +71,16 @@ export interface Buttons {
   STONE: boolean;
 }
 
-export interface Frame {
-  frame?: number;
+export interface Inputs {
   buttons: number; // Bitfield of all gamepad APIs buttons pressed state
+  leftTrigger: number;
+  rightTrigger: number;
 }
 
-export interface HeldFrame extends Frame {
+export interface Frame extends Inputs {
+  frame: number;
+}
+
+export interface HeldFrame extends Inputs {
   hold: number;
 }

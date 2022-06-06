@@ -64,7 +64,7 @@ export class FormControllerComponent {
 
     const hold = this.controller.controls.hold.value;
 
-    this.frame.emit({ buttons, hold });
+    this.frame.emit({ buttons, hold, leftTrigger: 0, rightTrigger: 0 });
 
     this.controller.reset({
       hold: 1,

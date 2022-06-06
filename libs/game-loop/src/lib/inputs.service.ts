@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, interval, Subject } from 'rxjs';
 import {
   debounceTime,
-  distinctUntilKeyChanged,
+  distinctUntilChanged,
   map,
   pairwise,
   scan,
@@ -10,7 +10,7 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs/operators';
-import { GAMEPAD_TO_XUSB, HeldFrame } from './game-loop.models';
+import { Frame, GAMEPAD_TO_XUSB, HeldFrame } from './game-loop.models';
 
 @Injectable({
   providedIn: 'root',
@@ -40,21 +40,34 @@ export class InputsService {
             const pad = navigator.getGamepads()[index];
 
             if (pad) {
-              const buttons = pad.buttons.reduce<number>(
-                (bitfield: number, button, index: number) =>
-                  button.value ? bitfield | GAMEPAD_TO_XUSB[index] : bitfield,
-                0
+              const foo = pad.buttons.reduce<Frame>(
+                (acc: Frame, button, index: number) => {
+                  switch (index) {
+                    case 6:
+                      return { ...acc, leftTrigger: button.value };
+                    case 7:
+                      return { ...acc, rightTrigger: button.value };
+                    default:
+                      return {
+                        ...acc,
+                        ...(button.value
+                          ? {
+                              buttons: acc.buttons | GAMEPAD_TO_XUSB[index],
+                            }
+                          : {}),
+                      };
+                  }
+                },
+                { frame, buttons: 0, leftTrigger: 0, rightTrigger: 0 }
               );
-              return {
-                frame,
-                buttons,
-                now: performance.now(),
-              };
+              console.log(foo);
+              return foo;
             } else {
               return {
                 frame,
                 buttons: 0,
-                now: performance.now(),
+                leftTrigger: 0,
+                rightTrigger: 0,
               };
             }
           })
@@ -66,13 +79,22 @@ export class InputsService {
   startRecordingControllerOnNextInput(controllerId: number) {
     this._stop = new Subject<void>();
 
+    function isSameButtons(prev: Frame, next: Frame): boolean {
+      return (
+        prev.buttons === next.buttons &&
+        prev.leftTrigger === next.leftTrigger &&
+        prev.rightTrigger === next.rightTrigger
+      );
+    }
+
     return this.getButtonsPerFrame(controllerId).pipe(
-      startWith({
-        buttons: 0,
+      startWith<Frame>({
         frame: 0,
-        cardinalDirection: 0,
+        buttons: 0,
+        leftTrigger: 0,
+        rightTrigger: 0,
       }),
-      distinctUntilKeyChanged('buttons'),
+      distinctUntilChanged(isSameButtons),
       pairwise(),
       map(([prev, next]) => ({ ...prev, hold: next.frame - prev.frame })),
       scan((acc: HeldFrame[], frame) => [...acc, frame], []),
