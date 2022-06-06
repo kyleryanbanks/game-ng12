@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Frame, GameLoopService, HeldFrame } from '@game-ng12/game-loop';
+import { Frame, HeldFrame, InputsService } from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
 import { Observable, of, Subscription } from 'rxjs';
 
@@ -36,14 +36,12 @@ import { Observable, of, Subscription } from 'rxjs';
     <button (click)="onStop()">Stop</button>
 
     <div *ngIf="this.frame$ | async as frame">
-      <ft-frame-direction [buttons]="frame.buttons"></ft-frame-direction>
-      <ft-frame-buttons [buttons]="frame.buttons"></ft-frame-buttons>
+      <ft-xbox-buttons [buttons]="frame.buttons"></ft-xbox-buttons>
     </div>
 
     <section>
       <div *ngFor="let frame of frames">
-        <ft-frame-direction [buttons]="frame.buttons"></ft-frame-direction>
-        <ft-frame-buttons [buttons]="frame.buttons"></ft-frame-buttons>
+        <ft-xbox-buttons [buttons]="frame.buttons"></ft-xbox-buttons>
         <strong>{{ frame.hold }}</strong>
       </div>
     </section>
@@ -81,7 +79,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   @Input() controllerId!: number;
 
   constructor(
-    private gameLoop: GameLoopService,
+    private inputs: InputsService,
     public recordings: RecordingsStore
   ) {
     this.recordingsState = this.recordings.select((state) => state);
@@ -90,10 +88,10 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription.add(
       this.delay.valueChanges.subscribe((delay: number) => {
-        this.gameLoop.msDelay = delay;
+        this.inputs.msDelay = delay;
       })
     );
-    this.frame$ = this.gameLoop.getButtonsPerFrame(this.controllerId);
+    this.frame$ = this.inputs.getButtonsPerFrame(this.controllerId);
     this.onReset();
   }
 
@@ -104,7 +102,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   onReset() {
     this.frames = [];
     this.recorder?.unsubscribe();
-    this.recorder = this.gameLoop
+    this.recorder = this.inputs
       .startRecordingControllerOnNextInput(this.controllerId)
       .subscribe((frames) => {
         this.frames = frames;
