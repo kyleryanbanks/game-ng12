@@ -17,6 +17,76 @@ export enum XUSB_BUTTON {
   Y = 1 << 15,
 }
 
+export interface Button {
+  value: number;
+  name: string;
+  color: string;
+  round: boolean;
+}
+
+export const XUSB_BUTTONS: Button[] = [
+  { value: XUSB_BUTTON.DPAD_UP, name: 'U', color: 'dodgerblue', round: false },
+  {
+    value: XUSB_BUTTON.DPAD_DOWN,
+    name: 'D',
+    color: 'dodgerblue',
+    round: false,
+  },
+  {
+    value: XUSB_BUTTON.DPAD_LEFT,
+    name: 'L',
+    color: 'dodgerblue',
+    round: false,
+  },
+  {
+    value: XUSB_BUTTON.DPAD_RIGHT,
+    name: 'R',
+    color: 'dodgerblue',
+    round: false,
+  },
+  {
+    value: XUSB_BUTTON.START,
+    name: 'St',
+    color: 'darkslategrey',
+    round: false,
+  },
+  { value: XUSB_BUTTON.BACK, name: 'Ba', color: 'darkslategrey', round: false },
+  {
+    value: XUSB_BUTTON.LEFT_THUMB,
+    name: 'LTh',
+    color: 'darkslategrey',
+    round: true,
+  },
+  {
+    value: XUSB_BUTTON.RIGHT_THUMB,
+    name: 'RTh',
+    color: 'darkslategrey',
+    round: true,
+  },
+  {
+    value: XUSB_BUTTON.LEFT_SHOULDER,
+    name: 'LB',
+    color: 'darkslategrey',
+    round: true,
+  },
+  {
+    value: XUSB_BUTTON.RIGHT_SHOULDER,
+    name: 'RB',
+    color: 'darkslategrey',
+    round: true,
+  },
+  {
+    value: XUSB_BUTTON.GUIDE,
+    name: 'Gu',
+    color: 'darkslategrey',
+    round: false,
+  },
+  { value: XUSB_BUTTON.A, name: 'A', color: 'green', round: true },
+  { value: XUSB_BUTTON.B, name: 'B', color: 'red', round: true },
+  { value: XUSB_BUTTON.X, name: 'X', color: 'blue', round: true },
+  { value: XUSB_BUTTON.Y, name: 'Y', color: 'goldenrod', round: true },
+];
+
 export enum XUSB_DPAD_DIRECTIONS {
   DPAD_NORTH = 1,
   DPAD_NORTHWEST = 5,
