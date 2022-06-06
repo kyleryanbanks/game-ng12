@@ -4,6 +4,7 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
 @Component({
   selector: 'ft-xbox-buttons',
   template: `
+    <strong *ngIf="hold">{{ hold }}</strong>
     <ng-container *ngFor="let input of inputs">
       <div
         *ngIf="checkButtonsAndValue(input.value)"
@@ -23,7 +24,8 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
         flex-direction: row;
       }
 
-      div {
+      div,
+      strong {
         font-weight: bold;
         display: flex;
         align-items: center;
@@ -38,6 +40,7 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
 export class XboxButtonsComponent {
   inputs: Button[] = XUSB_BUTTONS;
   @Input() buttons = 0;
+  @Input() hold?: number;
 
   checkButtonsAndValue(value: number) {
     return this.buttons & value;

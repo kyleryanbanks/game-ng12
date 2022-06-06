@@ -14,6 +14,6 @@ import { XboxButtonsComponent } from './xbox-buttons/xbox-buttons.component';
     FrameDirectionComponent,
     XboxButtonsComponent,
   ],
-  exports: [FrameViewComponent],
+  exports: [FrameViewComponent, XboxButtonsComponent],
 })
 export class InputViewerUiModule {}

@@ -41,8 +41,10 @@ import { Observable, of, Subscription } from 'rxjs';
 
     <section>
       <div *ngFor="let frame of frames">
-        <ft-xbox-buttons [buttons]="frame.buttons"></ft-xbox-buttons>
-        <strong>{{ frame.hold }}</strong>
+        <ft-xbox-buttons
+          [buttons]="frame.buttons"
+          [hold]="frame.hold"
+        ></ft-xbox-buttons>
       </div>
     </section>
 
