@@ -6,10 +6,8 @@
 </div>
 
 <div class="controls">
-  <button [disabled]="!connected" (click)="onPlay(asP2.checked)">
-    {{ asP2.checked ? 'Playback as P2' : 'Playback' }}
-  </button>
-  <label><input type="checkbox" [checked] #asP2 />As P2</label>
+  <button [disabled]="!connected" (click)="onPlay()">Playback</button>
+  <label><input [formControl]="asP2" type="checkbox" />As P2</label>
   <button [disabled]="!connected" (click)="onNeutral()">Neutral</button>
   <button (click)="onClear()">Clear</button>
 </div>

@@ -5,12 +5,13 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { ControllerService } from '@game-ng12/controller/data';
 import { swapBits } from '@game-ng12/controller/shared';
 import { HeldFrame } from '@game-ng12/game-loop';
 import { RecordingsStore } from '@game-ng12/recorder/data';
 import { from, of, Subscription } from 'rxjs';
-import { concatMap, delay, tap, timeInterval } from 'rxjs/operators';
+import { concatMap, delay, tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './shell.component.html',
@@ -21,6 +22,7 @@ export class ShellComponent implements OnInit, OnDestroy {
   frames: HeldFrame[] = [];
   subscriptions = new Subscription();
   connected = false;
+  asP2 = new FormControl(true);
 
   constructor(
     public controller: ControllerService,
@@ -33,6 +35,14 @@ export class ShellComponent implements OnInit, OnDestroy {
         this.connected = connected;
       })
     );
+    this.subscriptions.add(
+      this.asP2.valueChanges.subscribe(() => {
+        this.frames = this.frames.map((frame) => ({
+          ...frame,
+          buttons: swapBits(frame.buttons, 2, 3),
+        }));
+      })
+    );
   }
 
   ngOnDestroy() {
@@ -40,7 +50,14 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   onLoad(id: string) {
-    this.frames = this.recordings.getFramesForSelectedRecording(id) || [];
+    const recording = this.recordings.getFramesForSelectedRecording(id) || [];
+
+    this.frames = this.asP2.value
+      ? recording.map((frame) => ({
+          ...frame,
+          buttons: swapBits(frame.buttons, 2, 3),
+        }))
+      : recording;
   }
 
   onClear() {
@@ -64,17 +81,8 @@ export class ShellComponent implements OnInit, OnDestroy {
     this.controller.setNeutral();
   }
 
-  onPlay(asP2: boolean) {
-    let frames = this.frames;
-
-    if (asP2) {
-      frames = frames.map((frame) => ({
-        ...frame,
-        buttons: swapBits(frame.buttons, 2, 3),
-      }));
-    }
-
-    from(frames)
+  onPlay() {
+    from(this.frames)
       .pipe(
         concatMap((frame) =>
           of(frame).pipe(
@@ -87,10 +95,7 @@ export class ShellComponent implements OnInit, OnDestroy {
             ),
             delay(18 * frame.hold)
           )
-        ),
-        tap(console.log),
-        timeInterval(),
-        tap(console.log)
+        )
       )
       .subscribe({ complete: () => this.controller.setNeutral() });
   }
