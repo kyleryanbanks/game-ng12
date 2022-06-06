@@ -88,6 +88,9 @@ export default class App {
     App.mainWindow.setMenu(null);
     App.mainWindow.center();
 
+    // Values include normal, floating, torn-off-menu, modal-panel, main-menu, status, pop-up-menu, screen-saver
+    App.mainWindow.setAlwaysOnTop(true, 'screen-saver');
+
     // if main window is ready to show, close the splash window and show the main window
     App.mainWindow.once('ready-to-show', () => {
       App.mainWindow.show();
