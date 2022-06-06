@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { GameLoopService } from '@game-ng12/game-loop';
 import { Observable } from 'rxjs';
-import { scan } from 'rxjs/operators';
+import { scan, startWith } from 'rxjs/operators';
 
 @Component({
   templateUrl: './shell.component.html',
@@ -21,7 +21,8 @@ export class ShellComponent {
           };
         },
         { 0: false, 1: false, 2: false, 3: false }
-      )
+      ),
+      startWith({ 0: false, 1: false, 2: false, 3: false })
     );
   }
 }
