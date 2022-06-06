@@ -85,53 +85,65 @@
       >
     </fieldset>
 
-    <fieldset id="buttons" formGroupName="buttons">
+    <fieldset id="buttons">
       <legend>Buttons</legend>
+      <ng-container formGroupName="buttons">
+        <label>
+          <input type="checkbox" name="buttons" formControlName="Y" />Y
+        </label>
+        <label>
+          <input type="checkbox" name="buttons" formControlName="X" />X
+        </label>
+        <label>
+          <input type="checkbox" name="buttons" formControlName="B" />B
+        </label>
+        <label>
+          <input type="checkbox" name="buttons" formControlName="A" />A
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="buttons"
+            formControlName="RIGHT_SHOULDER"
+          />RB
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="buttons"
+            formControlName="LEFT_SHOULDER"
+          />LB
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="buttons"
+            formControlName="RIGHT_THUMB"
+          />RTh
+        </label>
+        <label>
+          <input
+            type="checkbox"
+            name="buttons"
+            formControlName="LEFT_THUMB"
+          />LTh
+        </label>
+        <label>
+          <input type="checkbox" name="buttons" formControlName="START" />St
+        </label>
+        <label>
+          <input type="checkbox" name="buttons" formControlName="BACK" />Ba
+        </label>
+      </ng-container>
       <label>
-        <input type="checkbox" name="buttons" formControlName="Y" />Y
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="X" />X
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="B" />B
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="A" />A
+        <input type="checkbox" name="buttons" formControlName="leftTrigger" />LT
       </label>
       <label>
         <input
           type="checkbox"
           name="buttons"
-          formControlName="RIGHT_THUMB"
-        />R.Thumb
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="buttons"
-          formControlName="LEFT_THUMB"
-        />L.Thumb
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="buttons"
-          formControlName="RIGHT_SHOULDER"
-        />R.Shoulder
-      </label>
-      <label>
-        <input
-          type="checkbox"
-          name="buttons"
-          formControlName="LEFT_SHOULDER"
-        />L.Shoulder
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="START" />Start
-      </label>
-      <label>
-        <input type="checkbox" name="buttons" formControlName="BACK" />Back
+          formControlName="rightTrigger"
+        />RT
       </label>
     </fieldset>
   </div>

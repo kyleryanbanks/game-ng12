@@ -28,6 +28,8 @@ export class FormControllerComponent {
     this.controller = fb.group({
       hold: [1],
       direction: [0],
+      leftTrigger: [false],
+      rightTrigger: [false],
       buttons: fb.group({
         RIGHT_THUMB: [false],
         LEFT_THUMB: [false],
@@ -63,12 +65,18 @@ export class FormControllerComponent {
     const buttons = buttonInputs | direction;
 
     const hold = this.controller.controls.hold.value;
+    const leftTrigger = this.controller.controls.leftTrigger.value ? 100 : 0;
+    const rightTrigger = this.controller.controls.rightTrigger.value ? 100 : 0;
 
-    this.frame.emit({ buttons, hold, leftTrigger: 0, rightTrigger: 0 });
+    console.log({ buttons, hold, leftTrigger, rightTrigger });
+
+    this.frame.emit({ buttons, hold, leftTrigger, rightTrigger });
 
     this.controller.reset({
       hold: 1,
       direction: 0,
+      leftTrigger: false,
+      rightTrigger: false,
       buttons: {
         RIGHT_THUMB: false,
         LEFT_THUMB: false,
