@@ -40,7 +40,7 @@ export class InputsService {
             const pad = navigator.getGamepads()[index];
 
             if (pad) {
-              const foo = pad.buttons.reduce<Frame>(
+              return pad.buttons.reduce<Frame>(
                 (acc: Frame, button, index: number) => {
                   switch (index) {
                     case 6:
@@ -60,8 +60,6 @@ export class InputsService {
                 },
                 { frame, buttons: 0, leftTrigger: 0, rightTrigger: 0 }
               );
-              console.log(foo);
-              return foo;
             } else {
               return {
                 frame,

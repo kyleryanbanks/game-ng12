@@ -127,6 +127,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   }
 
   onSave() {
+    console.log(this.frames);
     this.recordings.upsertRecording({
       frames: this.frames,
       id: this.name.value,

@@ -49,6 +49,7 @@ export class ShellComponent implements OnInit, OnDestroy {
 
   onFrame(frame: HeldFrame) {
     this.frames.push(frame);
+    console.log(this.frames);
   }
 
   onReorder(event: CdkDragDrop<HeldFrame[]>) {

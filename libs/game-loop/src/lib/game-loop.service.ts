@@ -40,7 +40,6 @@ export class GameLoopService {
       // Expand emits the first value provided to it, and in this
       // case we just want to ignore the undefined input frame
       filter((lastFrame) => lastFrame !== undefined),
-      tap((frame) => console.log(frame)),
       // map((lastFrame: IFrameData) => lastFrame.deltaTime),
       share()
     );
