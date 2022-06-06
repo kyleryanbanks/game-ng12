@@ -27,7 +27,9 @@
       cdkDrag
       (click)="onLoad(recording.id)"
     >
-      {{ recording.id }}
+      <strong>
+        {{ recording.id }}
+      </strong>
     </div>
   </div>
 
@@ -38,9 +40,13 @@
     [cdkDropListData]="frames"
     (cdkDropListDropped)="onReorder($event)"
   >
-    <div class="drag-item" *ngFor="let frame of frames" cdkDrag>
-      Input: {{ frame.buttons }} for {{ frame.hold }} frame/s
-    </div>
+    <ft-xbox-buttons
+      class="drag-item"
+      *ngFor="let frame of frames"
+      cdkDrag
+      [buttons]="frame.buttons"
+      [hold]="frame.hold"
+    ></ft-xbox-buttons>
   </div>
 </section>
 
