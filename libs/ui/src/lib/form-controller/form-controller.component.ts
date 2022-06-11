@@ -65,8 +65,8 @@ export class FormControllerComponent {
     const buttons = buttonInputs | direction;
 
     const hold = this.controller.controls.hold.value;
-    const leftTrigger = this.controller.controls.leftTrigger.value ? 100 : 0;
-    const rightTrigger = this.controller.controls.rightTrigger.value ? 100 : 0;
+    const leftTrigger = this.controller.controls.leftTrigger.value ? 255 : 0;
+    const rightTrigger = this.controller.controls.rightTrigger.value ? 255 : 0;
 
     this.frame.emit({ buttons, hold, leftTrigger, rightTrigger });
 
