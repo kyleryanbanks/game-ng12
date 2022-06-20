@@ -159,8 +159,8 @@
         "serve-with-services": {
           "builder": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [ 
-              "nx run familiar:serve-until-ready", 
+            "commands": [
+              "nx run familiar:serve-until-ready",
               "nx run roost:serve"
             ],
             "parallel": false
@@ -384,31 +384,6 @@
           "options": {
             "jestConfig": "apps/roost/jest.config.js",
             "passWithNoTests": true
-          }
-        }
-      }
-    },
-    "sequencer-data": {
-      "projectType": "library",
-      "root": "libs/sequencer/data",
-      "sourceRoot": "libs/sequencer/data/src",
-      "prefix": "game-ng12",
-      "architect": {
-        "test": {
-          "builder": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/sequencer/data"],
-          "options": {
-            "jestConfig": "libs/sequencer/data/jest.config.js",
-            "passWithNoTests": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "libs/sequencer/data/src/**/*.ts",
-              "libs/sequencer/data/src/**/*.html"
-            ]
           }
         }
       }

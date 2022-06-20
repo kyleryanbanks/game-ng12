@@ -56,9 +56,6 @@
       "tags": ["scope:familiar", "type:data"]
     },
     "roost": {},
-    "sequencer-data": {
-      "tags": ["scope:familiar", "type:data"]
-    },
     "sequencer-shell": {
       "tags": ["scope:familiar", "type:shell"]
     },
