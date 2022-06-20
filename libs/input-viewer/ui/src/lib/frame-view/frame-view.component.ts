@@ -1,6 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Frame, HeldFrame, InputsService } from '@game-ng12/game-loop';
+import {
+  HeldFrame,
+  RealTimeFrame,
+  RealTimeInputsService,
+} from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
 import { Observable, of, Subscription } from 'rxjs';
 
@@ -9,22 +13,17 @@ import { Observable, of, Subscription } from 'rxjs';
   template: `
     <h2>Controller: {{ controllerId }}</h2>
     <input
-      [formControl]="delay"
-      [value]="delay.value"
-      id="delay"
+      [formControl]="fps"
+      [value]="fps.value"
+      id="fps"
       type="range"
-      min="1"
-      max="32"
-      step="0.1"
+      min="30"
+      max="90"
+      step="1"
     />
-    <label for="delay"
-      >Delay(ms):
-      <input
-        type="number"
-        step="0.1"
-        [formControl]="delay"
-        [value]="delay.value"
-      />
+    <label for="fps"
+      >Display FPS:
+      <input type="number" step="1" [formControl]="fps" [value]="fps.value" />
     </label>
 
     <label for="name"
@@ -49,7 +48,7 @@ import { Observable, of, Subscription } from 'rxjs';
           [buttons]="frame.buttons"
           [leftTrigger]="frame.leftTrigger"
           [rightTrigger]="frame.rightTrigger"
-          [hold]="frame.hold"
+          [hold]="frame.hold * fps.value"
         ></ft-xbox-buttons>
       </div>
     </section>
@@ -77,13 +76,13 @@ import { Observable, of, Subscription } from 'rxjs';
 })
 export class FrameViewComponent implements OnInit, OnDestroy {
   now = performance.now();
-  frame$: Observable<Frame> = of({
+  frame$: Observable<RealTimeFrame> = of({
     buttons: 0,
-    frame: 0,
+    time: 0,
     leftTrigger: 0,
     rightTrigger: 0,
   });
-  delay = new FormControl(16);
+  fps = new FormControl(60);
   name = new FormControl('');
   subscription = new Subscription();
   recorder = new Subscription();
@@ -92,19 +91,14 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   @Input() controllerId!: number;
 
   constructor(
-    private inputs: InputsService,
+    private inputs: RealTimeInputsService,
     public recordings: RecordingsStore
   ) {
     this.recordingsState = this.recordings.select((state) => state);
   }
 
   ngOnInit() {
-    this.subscription.add(
-      this.delay.valueChanges.subscribe((delay: number) => {
-        this.inputs.msDelay = delay;
-      })
-    );
-    this.frame$ = this.inputs.getButtonsPerFrame(this.controllerId);
+    this.frame$ = this.inputs.getTimedButtons(this.controllerId);
     this.onReset();
   }
 

@@ -77,6 +77,10 @@ export interface Inputs {
   rightTrigger: number;
 }
 
+export interface RealTimeFrame extends Inputs {
+  time: number;
+}
+
 export interface Frame extends Inputs {
   frame: number;
 }

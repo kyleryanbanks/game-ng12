@@ -4,7 +4,7 @@ import { Button, XUSB_BUTTONS } from '@game-ng12/controller/shared';
 @Component({
   selector: 'ft-xbox-buttons',
   template: `
-    <strong *ngIf="hold">{{ hold }}</strong>
+    <strong *ngIf="hold">{{ hold | number: '1.0-0' }}</strong>
     <ng-container *ngFor="let input of inputs">
       <div
         *ngIf="checkButtonsAndValue(input.value)"

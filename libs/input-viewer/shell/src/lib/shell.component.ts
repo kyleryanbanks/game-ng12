@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GameLoopService } from '@game-ng12/game-loop';
+import { GameLoopService, RealTimeInputsService } from '@game-ng12/game-loop';
 import { Observable } from 'rxjs';
 import { scan, startWith } from 'rxjs/operators';
 
@@ -11,7 +11,10 @@ export class ShellComponent {
   order = [0, 1, 2, 3];
   connectedGamepads$: Observable<{ [id: string]: boolean }>;
 
-  constructor(public gameLoop: GameLoopService) {
+  constructor(
+    public inputs: RealTimeInputsService,
+    public gameLoop: GameLoopService
+  ) {
     this.connectedGamepads$ = this.gameLoop.connected$.pipe(
       scan(
         (gamepads, event) => {
