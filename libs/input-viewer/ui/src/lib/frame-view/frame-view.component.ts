@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
-  HeldFrame,
   RealTimeFrame,
+  RealTimeHeldFrame,
   RealTimeInputsService,
 } from '@game-ng12/game-loop';
 import { RecordingsStore, State } from '@game-ng12/recorder/data';
@@ -86,7 +86,7 @@ export class FrameViewComponent implements OnInit, OnDestroy {
   name = new FormControl('');
   subscription = new Subscription();
   recorder = new Subscription();
-  frames: HeldFrame[] = [];
+  frames: RealTimeHeldFrame[] = [];
   recordingsState: Observable<State>;
   @Input() controllerId!: number;
 

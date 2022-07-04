@@ -43,11 +43,11 @@
       *ngFor="let frame of frames"
       cdkDrag
       [buttons]="frame.buttons"
-      [hold]="frame.hold"
+      [hold]="frame.hold * 60"
       [leftTrigger]="frame.leftTrigger"
       [rightTrigger]="frame.rightTrigger"
     ></ft-xbox-buttons>
   </div>
 </section>
 
-<fam-form-controller (frame)="onFrame($event)"></fam-form-controller>
+<!-- <fam-form-controller (frame)="onFrame($event)"></fam-form-controller> -->

@@ -8,7 +8,11 @@ import {
   takeUntil,
   tap,
 } from 'rxjs/operators';
-import { GAMEPAD_TO_XUSB, HeldFrame, RealTimeFrame } from './game-loop.models';
+import {
+  GAMEPAD_TO_XUSB,
+  RealTimeFrame,
+  RealTimeHeldFrame,
+} from './game-loop.models';
 import { realTimeInterval } from './real-time.utils';
 
 @Injectable({
@@ -27,9 +31,9 @@ export class RealTimeInputsService {
             (acc: RealTimeFrame, button, index: number) => {
               switch (index) {
                 case 6:
-                  return { ...acc, leftTrigger: button.value };
+                  return { ...acc, leftTrigger: button.value > 0.15 ? 1 : 0 };
                 case 7:
-                  return { ...acc, rightTrigger: button.value };
+                  return { ...acc, rightTrigger: button.value > 0.15 ? 1 : 0 };
                 default:
                   return {
                     ...acc,
@@ -78,9 +82,8 @@ export class RealTimeInputsService {
     return this.getTimedButtons(controllerId).pipe(
       distinctUntilChanged(isSameButtons),
       pairwise(),
-      tap(console.log),
       map(([prev, next]) => ({ ...prev, hold: next.time - prev.time })),
-      scan((acc: HeldFrame[], frame) => [...acc, frame], []),
+      scan((acc: RealTimeHeldFrame[], frame) => [...acc, frame], []),
       takeUntil(this._stop)
     );
   };

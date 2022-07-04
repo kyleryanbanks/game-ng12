@@ -81,6 +81,15 @@ export interface RealTimeFrame extends Inputs {
   time: number;
 }
 
+export interface RealTimeData {
+  context: AudioContext;
+  time: number;
+}
+
+export interface RealTimeHeldFrame extends RealTimeFrame {
+  hold: number;
+}
+
 export interface Frame extends Inputs {
   frame: number;
 }

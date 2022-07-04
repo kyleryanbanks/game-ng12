@@ -8,10 +8,10 @@ import {
 import { FormControl } from '@angular/forms';
 import { ControllerService } from '@game-ng12/controller/data';
 import { swapBits } from '@game-ng12/controller/shared';
-import { HeldFrame } from '@game-ng12/game-loop';
+import { RealTimeHeldFrame, realtimePlayback } from '@game-ng12/game-loop';
 import { RecordingsStore } from '@game-ng12/recorder/data';
-import { from, of, Subscription } from 'rxjs';
-import { concatMap, delay, tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   templateUrl: './shell.component.html',
@@ -19,7 +19,7 @@ import { concatMap, delay, tap } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent implements OnInit, OnDestroy {
-  frames: HeldFrame[] = [];
+  frames: RealTimeHeldFrame[] = [];
   subscriptions = new Subscription();
   connected = false;
   asP2 = new FormControl(true);
@@ -64,12 +64,12 @@ export class ShellComponent implements OnInit, OnDestroy {
     this.frames = [];
   }
 
-  onFrame(frame: HeldFrame) {
+  onFrame(frame: RealTimeHeldFrame) {
     this.frames.push(frame);
     console.log(this.frames);
   }
 
-  onReorder(event: CdkDragDrop<HeldFrame[]>) {
+  onReorder(event: CdkDragDrop<RealTimeHeldFrame[]>) {
     moveItemInArray(
       event.container.data,
       event.previousIndex,
@@ -82,20 +82,15 @@ export class ShellComponent implements OnInit, OnDestroy {
   }
 
   onPlay() {
-    from(this.frames)
+    realtimePlayback(this.frames, 0)
       .pipe(
-        concatMap((frame) =>
-          of(frame).pipe(
-            tap((frame) =>
-              this.controller.setButtons(
-                frame.buttons,
-                frame.leftTrigger,
-                frame.rightTrigger
-              )
-            ),
-            delay(18 * frame.hold)
-          )
-        )
+        tap((frame) => {
+          this.controller.setButtons(
+            frame.buttons,
+            frame.leftTrigger,
+            frame.rightTrigger
+          );
+        })
       )
       .subscribe({ complete: () => this.controller.setNeutral() });
   }
