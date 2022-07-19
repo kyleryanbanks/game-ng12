@@ -1,6 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
+/apps/familiar/dist
 /dist
 /tmp
 /out-tsc

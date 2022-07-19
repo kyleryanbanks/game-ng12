@@ -61,7 +61,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "outputs": ["{options.outputPath}"],
           "options": {
-            "outputPath": "dist/apps/familiar",
+            "outputPath": "apps/familiar/dist",
             "index": "apps/familiar/src/index.html",
             "main": "apps/familiar/src/main.ts",
             "polyfills": "apps/familiar/src/polyfills.ts",
