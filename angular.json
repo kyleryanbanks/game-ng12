@@ -165,6 +165,12 @@
             ],
             "parallel": false
           }
+        },
+        "firebase": {
+          "builder": "@nxtend/firebase:firebase",
+          "options": {
+            "cmd": "--help"
+          }
         }
       }
     },
